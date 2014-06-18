@@ -6,16 +6,6 @@ block content
   .profile-picture(style="background-image:url('#{user.photo}')")
   span: a(href='/users/edit') Edit
 
-  form(action='/journeys')
-    button Find a Journey
-
-  form(action='/journeys/new')
-    button Create a Journey
-
-  form(action='/users/all')
-    button Follow other Users
-
-
   #location
     h3 Location:
       h5= user.location

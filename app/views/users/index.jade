@@ -4,10 +4,12 @@ block content
   h1= title
 
   h3 Search
-  form(method='GET',action='/users/search/:query')
-    input(type=text, name='search', autofocus=true)
-    button#filter Search
+  input#search(type=text, autofocus=true)
+  button#filter Search
 
   #users
     each user in users
-      h3= user.name
+      .user
+        img.profile-picture(src='#{user.photo}')
+        h5= user.name
+        h6= user.tagLine

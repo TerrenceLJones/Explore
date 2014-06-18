@@ -21,6 +21,10 @@ block content
     input(type='file', name='photo')
     button Save Profile
 
+    form(action='/users/dash')
+      button Cancel
+
+
   h2 Change Password
   form(action='/users/password/new', method='POST')
     input(type='password', name='password', placeholder='Enter New Password')

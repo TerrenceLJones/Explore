@@ -31,7 +31,7 @@ exports.createUserLocal = (req, res)=>{
       res.redirect('/verifyemail');
     }
     else{
-      res.redirect('/register');
+      res.redirect('/');
     }
   });
 };
@@ -127,16 +127,17 @@ exports.destroyUserAccount = (req,res)=>{
 
 exports.findAll = (req,res)=>{
   User.findAll(users=>{
-    res.render('users/index',{users:users, title:'User Search Page'});
+    res.render('users/index',{users:users, title:'Explorer\'s Search Page'});
   });
 };
 
 exports.filter = (req,res)=>{
   User.findById(res.locals.user._id, u=>{
     u.filter(req.query.search, users=>{
-      console.log('back in filter');
       console.log(users);
-    // res.send({users:users});
+        res.render('users/filter-partial',{users:users}, (e,html)=>{
+          res.send(html);
+        });
     });
   });
 };

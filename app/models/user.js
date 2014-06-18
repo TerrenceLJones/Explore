@@ -61,7 +61,7 @@ class User {
   }
 
   static login(obj, fn){
-    users.findOne({email:obj.email}, (e,u)=>{
+    users.findOne({$or :[{email:obj.username}, {username:obj.username}]}, (e,u)=>{
       if(u){
         var isMatch = bcrypt.compareSync(obj.password, u.password);
         if(isMatch){
@@ -78,7 +78,7 @@ class User {
   static destroyById(userId, fn) {
     userId = Mongo.ObjectID(userId);
     users.findAndRemove({_id:userId}, (e,u)=>{
-      rimraf(u.primaryPhotoDir, ()=> {
+      rimraf(u.photoDir, ()=> {
         fn(true);
       });
     });
@@ -92,7 +92,7 @@ class User {
                       ]
                     }).toArray((err, users)=>{
                         users = users.map(u=>_.create(User.prototype, u));
-                        users = users.filter(u=>this._id.toString()!==u._id.toString());
+                        // users = users.filter(u=>this._id.toString()!==u._id.toString());
                         fn(users);
          });
   }
@@ -114,20 +114,21 @@ class User {
       }
       this.name = fields.name[0].toLowerCase();
       this.email= fields.email[0];
+      this.username= fields.username[0];
       this.location = fields.location[0].toString();
       this.tagLine = fields.tagLine[0];
       this.isProfileInitialized = true;
 
       if(files.photo[0].size !== 0){
-        this.primaryPhoto = `/img/${this._id.toString()}/${files.photo[0].originalFilename}`;
+        this.photo = `/img/${this._id.toString()}/${files.photo[0].originalFilename}`;
         var userDir = `${__dirname}/../static/img/${this._id.toString()}`;
         userDir = path.normalize(userDir);
-        this.primaryPhotoPath = `${userDir}/${files.photo[0].originalFilename}`;
-        this.primaryPhotoDir = userDir;
+        this.photoPath = `${userDir}/${files.photo[0].originalFilename}`;
+        this.photoDir = userDir;
         if(!fs.existsSync(userDir)){
           fs.mkdirSync(userDir);
         }
-        fs.renameSync(files.photo[0].path, this.primaryPhotoPath);
+        fs.renameSync(files.photo[0].path, this.photoPath);
       }
     }
   }

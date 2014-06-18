@@ -19,10 +19,9 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
   function filter(){
     var search = $('#search').val();
 
-    ajax(`/users/search/:query`, 'get', {search:search}, html=>{
-      $('#users').append(html);
+    ajax(`/users`, 'get', {search:search}, html=>{
       $('#users').empty();
-
+      $('#users').append(html);
     });
 
   }

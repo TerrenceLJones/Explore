@@ -48,8 +48,8 @@ function load(app, fn){
   app.post('/users/edit',dbg, users.update);
   app.post('/users/password/new', dbg, users.newPassword);
   app.post('/users/delete/:id', dbg, users.destroyUserAccount);
-  app.get('/users/search', dbg, users.findAll);
-  app.get('/users/search/:query', dbg, users.filter);
+  app.get('/users/all', dbg, users.findAll);
+  app.get('/users', dbg, users.filter);
 
 
 

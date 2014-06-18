@@ -29,6 +29,9 @@ app.use(bodyParser());
 app.use(methodOverride());
 app.use(cookieSession({keys:['SEC123', '321CES']}));
 
+app.locals.moment = require('moment');
+
+
 /* --- http server      */
 var server = require('http').createServer(app);
 server.listen(port, function(){

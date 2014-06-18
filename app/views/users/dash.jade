@@ -1,7 +1,7 @@
 extends ../shared/template
 
 block content
-  h1= title
+  h1= user.name
 
   .profile-picture(style="background-image:url('#{user.primaryPhoto}')")
   span: a(href='/users/edit') Edit
@@ -15,10 +15,16 @@ block content
   form(action='/users/all')
     button Follow other Users
 
-  #name= user.name
-  #location= user.location
-  #join-date= user.joinDate
-  #tag-line= user.tagLine
+
+  #location
+    h3 Location:
+      h5= user.location
+  #join-date
+    h3 Join Date:
+    h5= moment(user.joinDate).format('MMMM Do YYYY')
+  #tag-line
+    h3 Bio
+    h5= user.tagLine
 
   h3 Badges
   #badges

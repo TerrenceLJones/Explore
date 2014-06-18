@@ -34,9 +34,12 @@ function load(app, fn){
   app.post('/signup', dbg, users.createUserLocal);
   app.post('/signup/complete/:id', dbg, users.completeLocal);
 
+  app.get('/verifyemail', dbg, users.verifyEmail);
   app.get('/verify/:id', dbg, users.verifyLocal);
 
+  app.get('/login', dbg, users.loginPage);
   app.post('/login', dbg, users.loginLocal);
+
 
   app.all('*', users.bounce);
 
@@ -45,6 +48,10 @@ function load(app, fn){
   app.post('/users/edit',dbg, users.update);
   app.post('/users/password/new', dbg, users.newPassword);
   app.post('/users/delete/:id', dbg, users.destroyUserAccount);
+  app.get('/users/search', dbg, users.findAll);
+  app.get('/users/search/:query', dbg, users.filter);
+
+
 
   app.get('/journeys', dbg, journeys.index);
   app.get('/journeys/new', dbg, journeys.new);

@@ -12,10 +12,13 @@ block content
   form(action='/journeys/new')
     button Create a Journey
 
+  form(action='/users/all')
+    button Follow other Users
+
   #name= user.name
   #location= user.location
   #join-date= user.joinDate
-  #bio= user.bio
+  #tag-line= user.tagLine
 
   h3 Badges
   #badges

@@ -11,10 +11,12 @@ block content
     input(type='text', name='email', autofocus=true, value=user.email)
     label Your Name:
     input(type='text', name='name', autofocus=true, value=user.name)
+    label Your Username:
+    input(type='text', name='username', autofocus=true, value=user.username)
     label Your Location:
     input(type='text',name='location', value=user.location)
-    label Your Bio:
-    textarea(type='text', name='bio')=  user.bio
+    label Your Tag Line:
+    input(type='text', name='tagLine', value= user.tagLine)
     label Your Profile Picture:
     input(type='file', name='photo')
     button Save Profile

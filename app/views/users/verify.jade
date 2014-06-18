@@ -1,8 +1,10 @@
 extends ../shared/template
 
 block content
-  h1 Enter Password
-  -console.log(u._id)
+  h1 Complete Verification
+
+  p. To complete you account verification, please enter a desired password.
+
   form(method='POST', action='/signup/complete/#{u._id}')
-    input(type='password', name='password', placeholder='Enter a Password', autofocus=true)
+    input(type='password', name='password', placeholder='i.e. "snickerdoodle5!"', autofocus=true)
     button Save

@@ -1,5 +1,7 @@
-var bcrypt   = require('bcrypt');
 var users = global.nss.db.collection('users');
+var traceur = require('traceur');
+var Base = traceur.require(__dirname + '/base.js');
+var bcrypt   = require('bcrypt');
 var Mongo = require('mongodb');
 var fs = require('fs');
 var _ = require('lodash');
@@ -15,9 +17,17 @@ class User {
         }
         else{
           var user = new User();
-          user.password = '';
           user.email = obj.email;
+          user.username = '';
+          user.password = '';
+          user.name = '';
           user.joinDate = new Date();
+          user.location = '';
+          user.tagLine = '';
+          user.photo = '';
+          user.badges = [];
+          user.journeySessions = [];
+          user.createdJournies = [];
           user.isValid = false;
           user.isProfileInitialized = false;
           users.save(user, ()=>{
@@ -38,6 +48,16 @@ class User {
         fn(null);
       }
     });
+  }
+
+
+
+  // static findById(id, fn){
+  //   Base.findById(id, users, User, fn);
+  // }
+  //
+    static findAll(fn) {
+    Base.findAll(users, User, fn);
   }
 
   static login(obj, fn){
@@ -64,6 +84,19 @@ class User {
     });
   }
 
+  filter(searchParams, fn) {
+    searchParams = searchParams.toLowerCase().replace(/,/g,' ').split(' ').filter(Boolean);
+    users.find({ $or: [ { location: { $in: searchParams} },
+                        { name:     { $in: searchParams } },
+                        { username: { $in: searchParams } }
+                      ]
+                    }).toArray((err, users)=>{
+                        users = users.map(u=>_.create(User.prototype, u));
+                        users = users.filter(u=>this._id.toString()!==u._id.toString());
+                        fn(users);
+         });
+  }
+
   save(fn) {
     users.save(this, ()=>fn());
   }
@@ -79,10 +112,11 @@ class User {
       if(!this.isCreated) {
         this.isCreated = true;
       }
-      this.name = fields.name[0];
+      this.name = fields.name[0].toLowerCase();
       this.email= fields.email[0];
       this.location = fields.location[0].toString();
-      this.bio = fields.bio[0];
+      this.tagLine = fields.tagLine[0];
+      this.isProfileInitialized = true;
 
       if(files.photo[0].size !== 0){
         this.primaryPhoto = `/img/${this._id.toString()}/${files.photo[0].originalFilename}`;
@@ -103,8 +137,10 @@ class User {
     // user.password = password;
     users.save(this, ()=>fn());
   }
-}
 
+
+
+}
 
 
 

@@ -28,12 +28,16 @@ exports.bounce = (req, res, next)=>{
 exports.createUserLocal = (req, res)=>{
   User.localCreate(req.body, user=>{
     if(user){
-      res.redirect('/');
+      res.redirect('/verifyemail');
     }
     else{
       res.redirect('/register');
     }
   });
+};
+
+exports.verifyEmail = (req,res)=>{
+  res.render('users/email',{title:'Check Email'});
 };
 
 exports.verifyLocal = (req, res)=>{
@@ -46,7 +50,7 @@ exports.completeLocal = (req, res)=>{
     User.findById(req.params.id, user=>{
       user.makeValid(req.body, u=>{
         if(u){
-          res.redirect('/users/edit');
+          res.redirect('/login');
         }
         else{
           res.redirect('/register');
@@ -55,12 +59,22 @@ exports.completeLocal = (req, res)=>{
     });
 };
 
+exports.loginPage = (req,res)=>{
+  res.render('users/login', {title: 'User Login'});
+};
+
 exports.loginLocal = (req, res)=>{
   User.login(req.body, user=>{
     if(user){
       req.session.userId = user._id;
-      res.redirect('/users/dash');
-    } else {
+      if(!user.isProfileInitialized){
+        res.redirect('/users/edit');
+      }
+      else{
+        res.redirect('/users/dash');
+      }
+    }
+    else {
       req.session.userId = null;
       res.redirect('/');
     }
@@ -108,5 +122,21 @@ exports.destroyUserAccount = (req,res)=>{
     if(true){
       res.redirect('/');
     }
+  });
+};
+
+exports.findAll = (req,res)=>{
+  User.findAll(users=>{
+    res.render('users/index',{users:users, title:'User Search Page'});
+  });
+};
+
+exports.filter = (req,res)=>{
+  User.findById(res.locals.user._id, u=>{
+    u.filter(req.query.search, users=>{
+      console.log('back in filter');
+      console.log(users);
+    // res.send({users:users});
+    });
   });
 };

@@ -1,0 +1,9 @@
+extends ../shared/template
+
+block content
+  h1 Please Login
+
+  form#form-login(method='post', action='/login')
+    input#login-input-email(type='email', name='email', placeholder='Email Address')
+    input#login-input-password(type='password', name='password', placeholder='Password')
+    button#submit-login Login

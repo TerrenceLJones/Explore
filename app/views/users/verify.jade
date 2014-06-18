@@ -1,0 +1,8 @@
+extends ../shared/template
+
+block content
+  h1 Enter Password
+  -console.log(u._id)
+  form(method='POST', action='/signup/complete/#{u._id}')
+    input(type='password', name='password', placeholder='Enter a Password', autofocus=true)
+    button Save

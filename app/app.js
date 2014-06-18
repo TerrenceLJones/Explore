@@ -13,6 +13,7 @@ var cookieSession  = require('cookie-session');
 var initMongo      = traceur.require(__dirname + '/lib/init-mongo.js');
 var initRoutes     = traceur.require(__dirname + '/lib/init-routes.js');
 
+
 /* --- configuration    */
 var app = express();
 app.set('views', __dirname + '/views');

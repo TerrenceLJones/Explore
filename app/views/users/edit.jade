@@ -1,0 +1,30 @@
+extends ../shared/template
+
+block content
+  #edit-container
+    p Edit Profile
+    p.email= user.email
+
+  h1 Update Profile Information
+  form(action='/users/edit', method='POST', enctype='multipart/form-data')
+    label Your Email:
+    input(type='text', name='email', autofocus=true, value=user.email)
+    label Your Name:
+    input(type='text', name='name', autofocus=true, value=user.name)
+    label Your Location:
+    input(type='text',name='location', value=user.location)
+    label Your Bio:
+    textarea(type='text', name='bio')=  user.bio
+    label Your Profile Picture:
+    input(type='file', name='photo')
+    button Save Profile
+
+  h2 Change Password
+  form(action='/users/password/new', method='POST')
+    input(type='password', name='password', placeholder='Enter New Password')
+    button Save Password
+
+  h3 Delete Account
+    form(action='/users/delete/#{user._id}', method='POST')
+      input(type='password', name='password', placholder='Enter Password')
+      button Save Password

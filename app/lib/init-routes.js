@@ -41,8 +41,13 @@ function load(app, fn){
   app.all('*', users.bounce);
 
   app.get('/users/dash', dbg, users.dash);
+  app.get('/users/edit', dbg, users.edit);
+  app.post('/users/edit',dbg, users.update);
+  app.post('/users/password/new', dbg, users.newPassword);
+  app.post('/users/delete/:id', dbg, users.destroyUserAccount);
 
   app.get('/journeys', dbg, journeys.index);
+  app.get('/journeys/new', dbg, journeys.new);
 
   fn();
 }

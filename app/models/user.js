@@ -1,11 +1,11 @@
 var bcrypt   = require('bcrypt');
 var users = global.nss.db.collection('users');
 var Mongo = require('mongodb');
-// var fs = require('fs');
+var fs = require('fs');
 var _ = require('lodash');
-// var path = require('path');
-// var rimraf = require('rimraf');
+var path = require('path');
 var request = require('request');
+var rimraf = require('rimraf');
 
 class User {
   static localCreate(obj,fn){
@@ -17,6 +17,7 @@ class User {
           var user = new User();
           user.password = '';
           user.email = obj.email;
+          user.joinDate = new Date();
           user.isValid = false;
           user.isProfileInitialized = false;
           users.save(user, ()=>{
@@ -54,6 +55,14 @@ class User {
     });
   }
 
+  static destroyById(userId, fn) {
+    userId = Mongo.ObjectID(userId);
+    users.findAndRemove({_id:userId}, (e,u)=>{
+      rimraf(u.primaryPhotoDir, ()=> {
+        fn(true);
+      });
+    });
+  }
 
   save(fn) {
     users.save(this, ()=>fn());
@@ -65,7 +74,38 @@ class User {
     users.save(this, ()=>fn(this));
   }
 
+  update(fields, files){
+    if(fields && typeof(fields.name) !== 'undefined') {
+      if(!this.isCreated) {
+        this.isCreated = true;
+      }
+      this.name = fields.name[0];
+      this.email= fields.email[0];
+      this.location = fields.location[0].toString();
+      this.bio = fields.bio[0];
+
+      if(files.photo[0].size !== 0){
+        this.primaryPhoto = `/img/${this._id.toString()}/${files.photo[0].originalFilename}`;
+        var userDir = `${__dirname}/../static/img/${this._id.toString()}`;
+        userDir = path.normalize(userDir);
+        this.primaryPhotoPath = `${userDir}/${files.photo[0].originalFilename}`;
+        this.primaryPhotoDir = userDir;
+        if(!fs.existsSync(userDir)){
+          fs.mkdirSync(userDir);
+        }
+        fs.renameSync(files.photo[0].path, this.primaryPhotoPath);
+      }
+    }
+  }
+
+  newPassword(password,fn){
+    this.password = bcrypt.hashSync(password, 8);
+    // user.password = password;
+    users.save(this, ()=>fn());
+  }
 }
+
+
 
 
 function sendVerificationEmail(user, fn){

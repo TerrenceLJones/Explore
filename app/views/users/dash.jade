@@ -3,4 +3,23 @@ extends ../shared/template
 block content
   h1= title
 
-  button(href='/journeys') Find a Journey
+  .profile-picture(style="background-image:url('#{user.primaryPhoto}')")
+  span: a(href='/users/edit') Edit
+
+  form(action='/journeys')
+    button Find a Journey
+
+  form(action='/journeys/new')
+    button Create a Journey
+
+  #name= user.name
+  #location= user.location
+  #join-date= user.joinDate
+  #bio= user.bio
+
+  h3 Badges
+  #badges
+  h3 Current Journeys
+  #current-journeys
+  h3 Past Journeys
+  #past-journeys

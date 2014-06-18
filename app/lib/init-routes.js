@@ -48,10 +48,9 @@ function load(app, fn){
   app.post('/:username/edit',dbg, users.update);
   app.post('/:username/password/new', dbg, users.newPassword);
   app.post('/:username/delete/:id', dbg, users.destroyUserAccount);
+
   app.get('/users/all', dbg, users.findAll);
   app.get('/users', dbg, users.filter);
-
-
 
   app.get('/journeys', dbg, journeys.index);
   app.get('/journeys/new', dbg, journeys.new);

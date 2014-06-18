@@ -88,7 +88,6 @@ exports.logout = (req, res)=>{
 
 exports.profile = (req, res)=>{
   User.findByUsername(req.params.username, user=>{
-    console.log(user);
     res.render('users/profile', {loggedInUser:res.locals.user, profileOwner:user, title: 'Dashboard'});
   });
 };

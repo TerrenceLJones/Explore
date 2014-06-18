@@ -68,10 +68,10 @@ exports.loginLocal = (req, res)=>{
     if(user){
       req.session.userId = user._id;
       if(!user.isProfileInitialized){
-        res.redirect('/users/edit');
+        res.redirect('/:username/edit');
       }
       else{
-        res.redirect('/users/dash');
+        res.redirect('/:username');
       }
     }
     else {
@@ -86,8 +86,11 @@ exports.logout = (req, res)=>{
   res.redirect('/login');
 };
 
-exports.dash = (req, res)=>{
-  res.render('users/dash', {user: res.locals.user, title: 'Dashboard'});
+exports.profile = (req, res)=>{
+  User.findByUsername(req.params.username, user=>{
+    console.log(user);
+    res.render('users/profile', {loggedInUser:res.locals.user, profileOwner:user, title: 'Dashboard'});
+  });
 };
 
 exports.edit = (req, res)=>{
@@ -99,10 +102,9 @@ exports.update = (req, res)=>{
   var user = res.locals.user;
 
   form.parse(req, (err, fields, files)=>{
-    console.log(fields);
     user.update(fields, files);
-      user.save(()=>{
-        res.redirect('/users/dash');
+      user.save((user)=>{
+        res.redirect(`/${user.username}`);
       });
     });
 };
@@ -110,8 +112,8 @@ exports.update = (req, res)=>{
 exports.newPassword = (req,res)=>{
   User.findById(res.locals.user._id, user=>{
     user.newPassword(req.body.password, ()=>{
-      user.save(()=>{
-        res.redirect('/users/dash');
+      user.save((user)=>{
+        res.redirect(`/${user.username}`);
       });
     });
   });

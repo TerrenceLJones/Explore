@@ -43,11 +43,11 @@ function load(app, fn){
 
   app.all('*', users.bounce);
 
-  app.get('/users/dash', dbg, users.dash);
-  app.get('/users/edit', dbg, users.edit);
-  app.post('/users/edit',dbg, users.update);
-  app.post('/users/password/new', dbg, users.newPassword);
-  app.post('/users/delete/:id', dbg, users.destroyUserAccount);
+  app.get('/:username', dbg, users.profile);
+  app.get('/:username/edit', dbg, users.edit);
+  app.post('/:username/edit',dbg, users.update);
+  app.post('/:username/password/new', dbg, users.newPassword);
+  app.post('/:username/delete/:id', dbg, users.destroyUserAccount);
   app.get('/users/all', dbg, users.findAll);
   app.get('/users', dbg, users.filter);
 

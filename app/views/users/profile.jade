@@ -1,0 +1,37 @@
+extends ../shared/template
+
+block content
+  h1= profileOwner.name
+
+  .profile-picture(style="background-image:url('#{user.photo}')")
+
+  -if(loggedInUser._id.toString() === profileOwner._id.toString())
+
+    span: a(href='/#{profileOwner.username}/edit') Edit
+
+    form(action='/journeys')
+      button Find a Journey
+
+    form(action='/journeys/new')
+      button Create a Journey
+
+    form(action='/users/all')
+      button Follow other Users
+
+
+  #location
+    h3 Location:
+      h5= profileOwner.location
+  #join-date
+    h3 Join Date:
+    h5= moment(profileOwner.joinDate).format('MMMM Do YYYY')
+  #tag-line
+    h3 Bio
+    h5= profileOwner.tagLine
+
+  h3 Badges
+  #badges
+  h3 Current Journeys
+  #current-journeys
+  h3 Past Journeys
+  #past-journeys

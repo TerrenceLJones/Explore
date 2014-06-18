@@ -10,6 +10,8 @@ block content
   #users
     each user in users
       .user
-        img.profile-picture(src='#{user.photo}')
-        h5= user.name
+        a(href='/#{user.username}')
+          img.profile-picture(src='#{user.photo}')
+        a(href='/#{user.username}')
+          h5= user.name
         h6= user.tagLine

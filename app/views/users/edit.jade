@@ -6,7 +6,7 @@ block content
     p.email= user.email
 
   h1 Update Profile Information
-  form(action='/users/edit', method='POST', enctype='multipart/form-data')
+  form(action='/#{user.username}/edit', method='POST', enctype='multipart/form-data')
     label Your Email:
     input(type='text', name='email', autofocus=true, value=user.email)
     label Your Name:
@@ -26,11 +26,11 @@ block content
 
 
   h2 Change Password
-  form(action='/users/password/new', method='POST')
+  form(action='/#{user.username}/password/new', method='POST')
     input(type='password', name='password', placeholder='Enter New Password')
     button Save Password
 
   h3 Delete Account
-    form(action='/users/delete/#{user._id}', method='POST')
+    form(action='/#{user.username}/delete/#{user._id}', method='POST')
       input(type='password', name='password', placholder='Enter Password')
       button Save Password

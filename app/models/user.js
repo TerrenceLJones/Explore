@@ -50,12 +50,18 @@ class User {
     });
   }
 
+  static findByUsername(username, fn){
+    users.findOne({username:username}, (e,u)=>{
+      if(u){
+        u = _.create(User.prototype, u);
+        fn(u);
+      }
+      else{
+        fn(null);
+      }
+    });
+  }
 
-
-  // static findById(id, fn){
-  //   Base.findById(id, users, User, fn);
-  // }
-  //
     static findAll(fn) {
     Base.findAll(users, User, fn);
   }
@@ -98,7 +104,7 @@ class User {
   }
 
   save(fn) {
-    users.save(this, ()=>fn());
+    users.save(this, ()=>fn(this));
   }
 
   makeValid(password,fn){

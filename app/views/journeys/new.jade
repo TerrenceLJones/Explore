@@ -3,6 +3,46 @@ extends ../shared/template
 block content
   h1= title
 
-  form(method='POST', action='/journeys')
+  form(method='POST', action='/journeys')#journey-form
     label Journey Name
-    input(type='text', name=name, autofocus='true')
+    input#name(type='text', name='journeyName', autofocus='true')
+
+    label Journey Location
+    input#journey-location(type='text', name='journeyLocation')
+
+    label Journey Type
+    select#type(name='journeyType')
+      option Select a Journey Type
+      option Food
+      option Arts
+      option Sightseeing
+      option Music
+      option Outdoors
+      option Other
+
+    #badge
+    #map
+
+    label Add New Stops
+    input#stop-location(placeholder='Enter Zip Code')
+    button#add Add Location
+
+    label Stops
+    #stops
+
+    button#create Create
+
+
+
+
+    //- .stop(data='first')
+    //-   label Stop Name
+    //-   input(type='text', name='stopName', placeholder='Enter Stop Name')
+    //-   label Stop Location
+    //-   input(type='number', name='location', placeholder='Enter Stop Location')
+    //-   label Directions
+    //-   textarea(type='text', name='directions', placeholder='Enter Directions')
+
+block scripts
+  script(src='/js/es6/compiled/journeys.js')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAkGxXJrX6q8CPx3G8EI701g51AX_Xi914&sensor=true&libraries=weather')

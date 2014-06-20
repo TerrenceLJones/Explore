@@ -1,0 +1,24 @@
+extends ../shared/template
+
+block content
+  h1= journey.name
+  h2= journey.location
+  h4= journey.type
+
+
+  -if(loggedInUser._id.toString() === journey.creatorId.toString())
+
+    span: a(href='/journeys/#{journey._id}/edit') Edit
+
+  #stops
+  -console.log(journey.stops)
+    each stop in journey.stops
+      h2= stop.name
+      h3= stop.location
+      h3= stop.desc
+      h3= stop.lat
+      h3= stop.lng
+
+
+
+block scripts

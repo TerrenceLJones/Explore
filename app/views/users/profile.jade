@@ -1,9 +1,10 @@
 extends ../shared/template
 
 block content
+
   h1= profileOwner.name
 
-  .profile-picture(style="background-image:url('#{user.photo}')")
+  .profile-picture(style="background-image:url('#{profileOwner.photo}')")
 
   -if(loggedInUser._id.toString() === profileOwner._id.toString())
 

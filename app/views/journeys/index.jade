@@ -3,4 +3,26 @@ extends ../shared/template
 block content
   h1= title
 
+  h3 Search
+  label Name
+  input#search-name(type=text, autofocus=true)
+  label Location
+  input#search-location(type=text)
+  label Type
+  select#search-type(name='journeyType')
+    option Select a Journey Type
+    option Food
+    option Arts
+    option Sightseeing
+    option Music
+    option Outdoors
+    option Other
+  button#filter-journeys Search
+
+  form(action='/journeys/new')
+    button Create a Journey
+
   #journeys
+    each journey in journeys
+      a(href='/journeys/#{journey._id}')
+        h1= journey.name

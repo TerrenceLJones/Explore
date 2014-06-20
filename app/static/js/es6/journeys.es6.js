@@ -19,6 +19,7 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
     initMap(36,-86,2);
     $('#add').click(addStop);
     $('#stops').on('click', '.delete-stop', deleteStop);
+    $('#type').change(addJourneyBadge);
   }
 
   var map;
@@ -28,17 +29,24 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
   function addStop(event){
     let zip = $('#stop-location').val().trim();
 
-    geocode(zip, location=>{
+    geocode(zip, (location,marker)=>{
       ajax(`/journeys/new/addstop`, 'POST', {location:location}, html=>{
+        $('#stop-location').val('').trigger('focus');
         $('#stops').append(html);
       });
     });
     event.preventDefault();
   }
 
+  // function deleteMarkers() {
+  //   // this.setMap(null);
+  // }
+
   function deleteStop(event){
+
     var stop = $(this).closest('div').remove();
     event.preventDefault();
+    // deleteMarkers();
   }
 
   function initMap(lat, lng, zoom){
@@ -71,4 +79,36 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
     new google.maps.Marker({map: map, position: latLng, title: name, icon: icon});
   }
 
+  function addJourneyBadge(){
+    var type = $('#type option:selected').text().toLowerCase();
+
+    switch(type) {
+    case 'food':
+      $('#badge').css('background-image','url("/img/badges/food.png")');
+      $('#badge-type').val('food');
+      break;
+    case 'arts':
+      $('#badge').css('background-image','url("/img/badges/art.png")');
+      $('#badge-type').val('arts');
+      break;
+    case 'sightseeing':
+      $('#badge').css('background-image','url("/img/badges/sightseeing.png")');
+      $('#badge-type').val('sightseeing');
+      break;
+    case 'music':
+      $('#badge').css('background-image','url("/img/badges/music.png")');
+      $('#badge-type').val('music');
+      break;
+    case 'outdoors':
+      $('#badge').css('background-image','url("/img/badges/outdoor.png")');
+      $('#badge-type').val('outdoors');
+      break;
+    case 'other':
+      $('#badge').css('background-image','url("/img/badges/default.png")');
+      $('#badge-type').val('other');
+      break;
+    default:
+      $('#badge').css('background-image','url("/img/badges/default.png")');
+    }
+  }
 })();

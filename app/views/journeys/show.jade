@@ -11,7 +11,6 @@ block content
     span: a(href='/journeys/#{journey._id}/edit') Edit
 
   #stops
-  -console.log(journey.stops)
     each stop in journey.stops
       h2= stop.name
       h3= stop.location

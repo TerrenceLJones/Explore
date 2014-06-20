@@ -12,12 +12,15 @@ class Journey {
     journey.name = obj.journeyName.toLowerCase();
     journey.location = obj.journeyLocation.toLowerCase();
     journey.type = obj.journeyType.toLowerCase();
+    journey.desc = obj.journeyDesc;
+    journey.badge = obj.journeyBadge.toLowerCase();
+    journey.tags = obj.journeyTags.toLowerCase();
     journey.stops = [];
 
     for (var i=0; i<obj.stopName.length; i++) {
       var stop = {};
       stop.name = obj.stopName[i];
-      stop.desc = obj.stopDescription[i];
+      stop.desc = obj.stopDesc[i];
       stop.lat = obj.stopLat[i];
       stop.lng = obj.stopLng[i];
       journey.stops.push(stop);
@@ -74,6 +77,7 @@ class Journey {
                         fn(journeys);
          });
   }
+
 }
 
 module.exports = Journey;

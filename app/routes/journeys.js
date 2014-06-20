@@ -15,6 +15,7 @@ exports.new = (req, res)=>{
 
 exports.addStop = (req, res)=>{
   var location = req.body.location;
+  console.log(req.body.location);
   res.render('journeys/addStop', {location:location}, (err,html)=>{
     res.send(html);
   });

@@ -20,7 +20,14 @@ block content
       option Outdoors
       option Other
 
+    label Journey Description
+    textarea#journey-description(type='textarea', name='journeyDesc')
+
+    label Journey Tags
+    input#journey-tags(type='text', name='journeyTags')
+
     #badge
+    input#badge-type(type='hidden', name='journeyBadge', value='')
     #map
 
     label Add New Stops

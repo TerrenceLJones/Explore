@@ -19,7 +19,22 @@ block content
       option Music
       option Outdoors
       option Other
-    button Save Journey
+    button#save Save Journey
+
+  #map
+
+  label Add New Stops
+  input#stop-location(placeholder='Enter Zip Code')
+  button#add Add Location
+
+  label Stops
+  #stops
+    each stop in journey.stops
+      h2= stop.name
+      h3= stop.location
+      h3= stop.desc
+      h3= stop.lat
+      h3= stop.lng
 
   form(action='/journeys/#{journey._id}')
     button Cancel
@@ -28,3 +43,7 @@ block content
     form(action='/journeys/#{journey._id}/delete', method='POST')
       input(type='password', name='password', placholder='Enter Password')
       button Delete Journey
+
+block scripts
+  script(src='/js/es6/compiled/journeys.js')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAkGxXJrX6q8CPx3G8EI701g51AX_Xi914&sensor=true&libraries=weather')

@@ -68,19 +68,19 @@ exports.filter = (req,res)=>{
   });
 };
 
-exports.begin = (req, res)=>{
+exports.play = (req, res)=>{
   User.findById(res.locals.user._id, user=>{
     Journey.findById(req.params.id, journey=>{
       Session.doesSessionExist(user._id, journey._id, session=>{
         if(session){
           Session.findById(session._id, session=>{
-            res.render('journeys/begin', {session:session, journey:journey, title:'Begin Your Journey'});
+            res.render('journeys/play', {session:session, journey:journey, title:'Begin Your Journey'});
           });
         }
         else{
           Session.create(journey, session=>{
             user.addSessionToUser(session, ()=>{
-              res.render('journeys/begin', {session:session, journey:journey, title:'Begin Your Journey'});
+              res.render('journeys/play', {session:session, journey:journey, title:'Begin Your Journey'});
             });
           });
         }

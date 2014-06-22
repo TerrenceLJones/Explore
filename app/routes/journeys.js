@@ -2,6 +2,9 @@
 
 var traceur = require('traceur');
 var Journey = traceur.require(__dirname + '/../models/journey.js');
+var Session = traceur.require(__dirname + '/../models/session.js');
+var User = traceur.require(__dirname + '/../models/user.js');
+
 
 exports.index = (req, res)=>{
   Journey.findAll(journeys=>{
@@ -14,8 +17,9 @@ exports.new = (req, res)=>{
 };
 
 exports.addStop = (req, res)=>{
-  var location = req.body.location;
   console.log(req.body.location);
+  var location = req.body.location;
+  // console.log(req.body.location);
   res.render('journeys/addStop', {location:location}, (err,html)=>{
     res.send(html);
   });
@@ -61,5 +65,26 @@ exports.filter = (req,res)=>{
         res.render('journeys/journeys-filter-partial',{journeys:journeys}, (e,html)=>{
           res.send(html);
         });
+  });
+};
+
+exports.begin = (req, res)=>{
+  User.findById(res.locals.user._id, user=>{
+    Journey.findById(req.params.id, journey=>{
+      Session.doesSessionExist(user._id, journey._id, session=>{
+        if(session){
+          Session.findById(session._id, session=>{
+            res.render('journeys/begin', {session:session, journey:journey, title:'Begin Your Journey'});
+          });
+        }
+        else{
+          Session.create(journey, session=>{
+            user.addSessionToUser(session, ()=>{
+              res.render('journeys/begin', {session:session, journey:journey, title:'Begin Your Journey'});
+            });
+          });
+        }
+      });
+    });
   });
 };

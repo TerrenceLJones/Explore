@@ -24,6 +24,7 @@ function load(app, fn){
   var journeys = traceur.require(__dirname + '/../routes/journeys.js');
 
 
+
   // app.use(passport.initialize());
   // app.use(passport.session());
 
@@ -50,10 +51,12 @@ function load(app, fn){
   app.post('/journeys', dbg, journeys.create);
   app.get('/journeys/new', dbg, journeys.new);
   app.post('/journeys/new/addstop', dbg, journeys.addStop);
+  app.get('/journeys/play/:id', journeys.begin);
   app.get('/journeys/:id', dbg, journeys.show);
   app.get('/journeys/:id/edit', dbg, journeys.edit);
   app.post('/journeys/:id/delete', dbg, journeys.destroy);
   app.post('/journeys/:id', dbg, journeys.update);
+
 
 
 

@@ -26,7 +26,7 @@ class User {
           user.tagLine = '';
           user.photo = '';
           user.badges = [];
-          user.journeySessions = [];
+          user.sessions = [];
           user.createdJournies = [];
           user.isValid = false;
           user.isProfileInitialized = false;
@@ -144,6 +144,13 @@ class User {
     // user.password = password;
     users.save(this, ()=>fn());
   }
+
+  addSessionToUser(session, fn){
+    this.sessions.push(session._id);
+    users.save(this, ()=>fn());
+  }
+
+
 
 
 

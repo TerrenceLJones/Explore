@@ -3,6 +3,8 @@ var traceur = require('traceur');
 var Base = traceur.require(__dirname + '/base.js');
 var _ = require('lodash');
 var Mongo = require('mongodb');
+var ObjectID = require('mongodb').ObjectID;
+
 
 
 class Journey {
@@ -20,6 +22,7 @@ class Journey {
     for (var i=0; i<obj.stopName.length; i++) {
       var stop = {};
       stop.name = obj.stopName[i];
+      stop._id = new ObjectID();
       stop.desc = obj.stopDesc[i];
       stop.lat = obj.stopLat[i];
       stop.lng = obj.stopLng[i];
@@ -54,9 +57,35 @@ class Journey {
   }
 
   update(obj){
-      this.name = obj.journeyName;
-      this.location = obj.journeyLocation;
-      this.type = obj.journeyType;
+    console.log(obj);
+    this.name = obj.journeyName;
+    this.location = obj.journeyLocation;
+    this.type = obj.journeyType.toLowerCase();
+    var stop = {};
+    this.stops = [];
+
+    if(obj.stopName instanceof Array){
+      for(var i = 0; i < obj.stopName.length; i ++) {
+        stop = {};
+        stop.name = obj.stopName[i];
+        stop._id = new ObjectID();
+        stop.desc = obj.stopDesc[i];
+        stop.lat = obj.stopLat[i];
+        stop.lng = obj.stopLng[i];
+        this.stops.push(stop);
+      }
+    }
+    else{
+      stop = {};
+      stop.name = obj.stopName;
+      stop.id = new ObjectID();
+      stop.desc = obj.stopDesc;
+      stop.lat = obj.stopLat;
+      stop.lng = obj.stopLng;
+      this.stops.push(stop);
+    }
+
+    this.stops = _.uniq(this.stops, 'name');
   }
 
   save(fn) {
@@ -81,3 +110,5 @@ class Journey {
 }
 
 module.exports = Journey;
+
+// journeys.update(_id: obj._id}, { $push: { scores: { $each: [ 90, 92, 85 ] } } })

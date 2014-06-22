@@ -18,13 +18,16 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
 
   function init(){
     initMap(36,-86,2);
+    populateMap();
+    populateStopDivs();
+    addJourneyBadge();
     $('#add').click(addStop);
     $('#stops').on('click', '.delete-stop', deleteStop);
     $('#type').change(addJourneyBadge);
-    populateMap();
   }
 
   var map;
+  var markers = [];
 
   //======================Map functions
 
@@ -41,17 +44,6 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
     event.preventDefault();
   }
 
-  // function deleteMarkers() {
-  //   // this.setMap(null);
-  // }
-
-  function deleteStop(event){
-
-    var stop = $(this).closest('div').remove();
-    event.preventDefault();
-    // deleteMarkers();
-  }
-
   function initMap(lat, lng, zoom){
     let styles = [{'featureType':'water','elementType':'geometry','stylers':[{'color':'#333739'}]},{'featureType':'landscape','elementType':'geometry','stylers':[{'color':'#2ecc71'}]},{'featureType':'poi','stylers':[{'color':'#2ecc71'},{'lightness':-7}]},{'featureType':'road.highway','elementType':'geometry','stylers':[{'color':'#2ecc71'},{'lightness':-28}]},{'featureType':'road.arterial','elementType':'geometry','stylers':[{'color':'#2ecc71'},{'visibility':'on'},{'lightness':-15}]},{'featureType':'road.local','elementType':'geometry','stylers':[{'color':'#2ecc71'},{'lightness':-18}]},{'elementType':'labels.text.fill','stylers':[{'color':'#ffffff'}]},{'elementType':'labels.text.stroke','stylers':[{'visibility':'off'}]},{'featureType':'transit','elementType':'geometry','stylers':[{'color':'#2ecc71'},{'lightness':-34}]},{'featureType':'administrative','elementType':'geometry','stylers':[{'visibility':'on'},{'color':'#333739'},{'weight':0.8}]},{'featureType':'poi.park','stylers':[{'color':'#2ecc71'}]},{'featureType':'road','elementType':'geometry.stroke','stylers':[{'color':'#333739'},{'weight':0.3},{'lightness':10}]}];
     let mapOptions = {center: new google.maps.LatLng(lat, lng), zoom: zoom, mapTypeId: google.maps.MapTypeId.ROADMAP, styles:styles};
@@ -64,7 +56,7 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
 
     geocoder.geocode({address: zip}, (results, status)=>{
       let name= results[0].formatted_address.split(',')[0];
-      // var address = `${results[0].address_components[1].short_name} ${results[0].address_components[2].short_name} ${results[0].address_components[5].short_name}, ${results[0].address_components[7].short_name} ${results[0].address_components[9].short_name}, ${results[0].address_components[8].short_name}`;
+      // `${results[0].address_components[1].short_name} ${results[0].address_components[2].short_name} ${results[0].address_components[5].short_name}, ${results[0].address_components[7].short_name} ${results[0].address_components[9].short_name}, ${results[0].address_components[8].short_name}`;
       let lat = results[0].geometry.location.lat();
       let lng = results[0].geometry.location.lng();
       let latLng = new google.maps.LatLng(lat, lng);
@@ -79,7 +71,8 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
   function addMarker(lat,lng,name,icon){
     if(icon === undefined){icon = '/../img/flag.png';}
     let latLng = new google.maps.LatLng(lat, lng);
-    new google.maps.Marker({map: map, position: latLng, title: name, icon: icon});
+    var marker = new google.maps.Marker({map: map, position: latLng, title: name, icon: icon});
+    markers.push(marker);
   }
 
   function addJourneyBadge(){
@@ -88,7 +81,6 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
     switch(type) {
     case 'food':
       $('#badge').css('background-image','url("/img/badges/food.png")');
-
       $('#badge-type').val('food');
       break;
     case 'arts':
@@ -117,9 +109,40 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
   }
   function populateMap(){
     stops.forEach(stop=>{
-      console.log('inside populate');
       addMarker(stop.lat,stop.lng,stop.name);
     });
   }
+
+  function populateStopDivs(){
+    stops.forEach(stop=>{
+      ajax(`/journeys/new/addstop`, 'POST', {location:stop}, html=>{
+        $('#stops').append(html);
+      });
+    });
+  }
+
+  function deleteStop(event){
+    var stop = $(this).closest('div').remove();
+    var lat = $(this).closest('div').find('input.stop-lat').val() * 1;
+    var lng = $(this).closest('div').find('input.stop-lng').val() * 1;
+    event.preventDefault();
+    removeMarker(lat,lng);
+  }
+
+  function removeMarker(lat,lng){
+    markers.forEach(m=>{
+      var mlat = m.position.k.toFixed(2) * 1;
+      var mlng = m.position.A.toFixed(2) * 1;
+
+      if(mlat === lat && mlng === lng){
+        m.setMap(null);
+        console.log('true');
+      }
+    });
+  }
+
+
+
+
 
 })();

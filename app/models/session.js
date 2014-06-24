@@ -10,11 +10,12 @@ class Session {
     var session = new Session();
     session.userId = user._id;
     session.journeyId = journey._id;
-    session.lastUncompletedStop = [];
-    session.completedStops =[];
-    session.uncompletedStop = [];
+    // session.lastUncompletedStop = [];
+    session.stops = [];
     journey.stops.forEach(s=>{
-      session.uncompletedStop.push(s._id);});
+      s.isComplete = false;
+      session.stops.push(s);
+      });
     session.isJourneyComplete = false;
     sessions.save(session, (err,session)=>fn(session));
   }
@@ -22,8 +23,13 @@ class Session {
     uId = Mongo.ObjectID(uId);
     jId = Mongo.ObjectID(jId);
     sessions.findOne({ $and: [ {userId:uId}, {journeyId:jId} ] }, (err,session)=>{
-      if(session._id instanceof ObjectID){
-        fn(session);
+      if(session !== null){
+        if(session._id instanceof ObjectID){
+          fn(session);
+        }
+        else{
+          fn(null);
+        }
       }
       else{
         fn(null);
@@ -43,7 +49,33 @@ class Session {
       }
     });
   }
-//
+
+  completeStop(stop, fn){
+    this._id = Mongo.ObjectID(this._id);
+    this.userId = Mongo.ObjectID(this.userId);
+    this.journeyId = Mongo.ObjectID(this.journeyId);
+
+    this.stops.forEach(s=>{
+      if(s._id === stop._id){
+        s._id = Mongo.ObjectID(s._id);
+        s.isComplete = true;
+      }
+    });
+    sessions.save(this, (err,session)=>fn());
+  }
+
+  findAllUncompleteStops(session, fn){
+    var uncompleted = [];
+    session.stops.forEach(s=>{
+      if(s.isComplete === false){
+        console.log(s);
+        uncompleted.push(s);
+      }
+    });
+    fn(uncompleted);
+  }
+
+
 //   static findAll(fn) {
 //   Base.findAll(users, User, fn);
 //   }

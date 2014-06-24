@@ -4,6 +4,7 @@ var traceur = require('traceur');
 var Journey = traceur.require(__dirname + '/../models/journey.js');
 var Session = traceur.require(__dirname + '/../models/session.js');
 var User = traceur.require(__dirname + '/../models/user.js');
+var _ = require('lodash');
 
 
 exports.index = (req, res)=>{
@@ -17,9 +18,7 @@ exports.new = (req, res)=>{
 };
 
 exports.addStop = (req, res)=>{
-  console.log(req.body.location);
   var location = req.body.location;
-  // console.log(req.body.location);
   res.render('journeys/addStop', {location:location}, (err,html)=>{
     res.send(html);
   });
@@ -74,17 +73,36 @@ exports.play = (req, res)=>{
       Session.doesSessionExist(user._id, journey._id, session=>{
         if(session){
           Session.findById(session._id, session=>{
-            res.render('journeys/play', {session:session, journey:journey, title:'Begin Your Journey'});
+            session.findAllUncompleteStops(session, stops=>{
+              res.render('journeys/play', {session:session, stops:stops, journey:journey, title:'Begin Your Journey'});
+            });
           });
         }
         else{
-          Session.create(journey, session=>{
-            user.addSessionToUser(session, ()=>{
-              res.render('journeys/play', {session:session, journey:journey, title:'Begin Your Journey'});
+          Session.create(user, journey, session=>{
+            session.findAllUncompleteStops(session, stops=>{
+              res.render('journeys/play', {session:session, stops:stops, journey:journey, title:'Begin Your Journey'});
             });
           });
         }
       });
+    });
+  });
+};
+
+exports.stopTask = (req, res) =>{
+  var stop = req.body.stop;
+  res.render('journeys/stop-task', {stop:stop}, (e,html)=>{
+    res.send(html);
+  });
+};
+
+exports.completeStop = (req,res) =>{
+  var stop = req.body.stop;
+  var session = _.create(Session.prototype, req.body.session);
+  session.completeStop(stop, ()=>{
+    res.render('journeys/complete-stop', {stop:stop}, (e,html)=>{
+    res.send(html);
     });
   });
 };

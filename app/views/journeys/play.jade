@@ -4,21 +4,20 @@ block content
   h1= journey.name
   h2= journey.location
 
-  #stops
-    each stop in journey.stops
-      h2= stop.name
-      h3= stop.location
-      h3= stop.desc
-      h3= stop.lat
-      h3= stop.lng
-  //- -console.log(session.uncompletedStop)
+  button#find Find Me
+  button#reroute Reroute
 
-  #location
   #map
+
+  #stop-task
+  h2 Completed Stops
+  #completed-stops
+
   #directions
 
 block scripts
   script.
-    var stops = !{JSON.stringify(journey.stops)};
+    var stops = !{JSON.stringify(stops)};
+    var session = !{JSON.stringify(session)};
   script(src='/js/es6/compiled/journeys-play.js')
   script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAkGxXJrX6q8CPx3G8EI701g51AX_Xi914&sensor=true&libraries=weather')

@@ -51,6 +51,8 @@ function load(app, fn){
   app.post('/journeys', dbg, journeys.create);
   app.get('/journeys/new', dbg, journeys.new);
   app.post('/journeys/new/addstop', dbg, journeys.addStop);
+  app.post('/journeys/play/stop/task', dbg, journeys.stopTask);
+  app.post('/journeys/play/stop/task/complete', dbg, journeys.completeStop);
   app.get('/journeys/play/:id', journeys.play);
   app.get('/journeys/:id', dbg, journeys.show);
   app.get('/journeys/:id/edit', dbg, journeys.edit);

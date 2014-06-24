@@ -83,7 +83,7 @@ exports.loginLocal = (req, res)=>{
 
 exports.logout = (req, res)=>{
   req.session = null;
-  res.redirect('/login');
+  res.redirect('/');
 };
 
 exports.profile = (req, res)=>{

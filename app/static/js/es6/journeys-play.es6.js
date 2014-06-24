@@ -175,13 +175,19 @@
   }
 
   function populateMap(){
+    var latLng;
     stops.forEach(stop=>{
       if(stop.isComplete===false){
-        var latLng = new google.maps.LatLng(stop.lat,stop.lng);
+        latLng = new google.maps.LatLng(stop.lat,stop.lng);
         journeyStops.push({location:latLng, stopover:true});
         addMarker(stop.lat,stop.lng,stop.name);
         console.log(journeyStops);
         console.log(currStop);
+      }
+      if(stop.isComplete===true){
+        var icon = '/../img/flag.png';
+        latLng = new google.maps.LatLng(stop.lat,stop.lng);
+        addMarker(stop.lat,stop.lng,stop.name,icon);
       }
     });
   }
@@ -194,20 +200,5 @@
         getDirections();
     });
   }
-
-  //
-  // function populateStops(){
-  //   stops.forEach(stop=>{
-  //     ajax(`/journeys/new/addstop`, 'POST', {location:stop}, html=>{
-  //       $('#stops').append(html);
-  //     });
-  //   });
-  // }
-
-
-
-
-
-
 
 })();

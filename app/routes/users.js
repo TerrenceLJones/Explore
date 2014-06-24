@@ -88,7 +88,7 @@ exports.logout = (req, res)=>{
 
 exports.profile = (req, res)=>{
   var username;
-  
+
   if(req.params.username === undefined){
     username = res.locals.user.username;
   }
@@ -97,7 +97,6 @@ exports.profile = (req, res)=>{
   }
 
   User.findByUsername(username, user=>{
-    console.log(user);
     res.render('users/profile', {loggedInUser:res.locals.user, profileOwner:user, title: 'Dashboard'});
   });
 };

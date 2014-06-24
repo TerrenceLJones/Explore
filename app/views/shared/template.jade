@@ -3,10 +3,44 @@ html
   head
     meta(charset='utf-8')
     title= title
+
+    link(href='/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/css/bootstrap-theme.min.css', rel='stylesheet')
+    link(href='/css/normalize.css', rel='stylesheet')
     link(href='/less/app.css', rel='stylesheet')
     link(rel="icon" href="data:;base64,=")
 
   body
+
+    if(user)
+      nav.navbar.navbar-default.navbar-fixed-top.navbar-inverse(role='navigation')
+        .container-fluid
+          .navbar-header
+            button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.navbar-brand(href='/') Explore
+          #bs-example-navbar-collapse-1.collapse.navbar-collapse
+            ul.nav.navbar-nav
+              li.active
+                a(href='/') Home
+              li
+                a(href='/journeys') Find Journeys
+              li
+                a(href='/users/all') Search People
+            ul.nav.navbar-nav.navbar-right
+              li.dropdown
+                a.dropdown-toggle(href='#', data-toggle='dropdown')
+                  | #{user.name}
+                  b.caret
+                ul.dropdown-menu
+                  li
+                    a(href='/#{user.username}') Dash
+                  li
+                    a(href='/logout') Logout
+
     block content
 
     script(src='/js/vendor/jquery-2.1.1.js')
@@ -14,7 +48,7 @@ html
     script(src='/js/vendor/moment-2.6.0.js')
     script(src='/js/vendor/traceur.js')
     script(src='/socket.io/socket.io.js')
-    script(src='/js/es5/main.js')
+    script(src='/js/vendor/bootstrap.min.js')
     script(src='/js/es6/compiled/main.js')
     script(src='/js/es6/compiled/sockets.js')
 

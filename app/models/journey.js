@@ -5,8 +5,6 @@ var _ = require('lodash');
 var Mongo = require('mongodb');
 var ObjectID = require('mongodb').ObjectID;
 
-
-
 class Journey {
   static create(creatorId,obj,fn){
     var journey = new Journey();
@@ -16,8 +14,36 @@ class Journey {
     journey.type = obj.journeyType.toLowerCase();
     journey.desc = obj.journeyDesc;
     journey.badge = obj.journeyBadge.toLowerCase();
+    journey.badgeImg = badgeImage(obj.journeyBadge.toLowerCase());
     journey.tags = obj.journeyTags.toLowerCase();
     journey.stops = [];
+
+    function badgeImage(badgeName){
+     var badge;
+     switch(badgeName) {
+     case 'food':
+       badge = '/img/badges/food.png';
+       break;
+     case 'arts':
+       badge = '/img/badges/art.png';
+       break;
+     case 'sightseeing':
+       badge = '/img/badges/sightseeing.png';
+       break;
+     case 'music':
+       badge = '/img/badges/music.png';
+       break;
+     case 'outdoors':
+       badge = '/img/badges/outdoor.png';
+       break;
+     case 'other':
+       badge = '/img/badges/default.png';
+       break;
+     default:
+       badge = '/img/badges/default.png';
+     }
+     return badge;
+   }
 
     for (var i=0; i<obj.stopName.length; i++) {
       var stop = {};
@@ -28,7 +54,6 @@ class Journey {
       stop.lng = obj.stopLng[i];
       journey.stops.push(stop);
     }
-
     journeys.save(journey, ()=>{fn();});
   }
 
@@ -57,7 +82,6 @@ class Journey {
   }
 
   update(obj){
-    console.log(obj);
     this.name = obj.journeyName;
     this.location = obj.journeyLocation;
     this.type = obj.journeyType.toLowerCase();
@@ -106,7 +130,6 @@ class Journey {
                         fn(journeys);
          });
   }
-
 }
 
 module.exports = Journey;

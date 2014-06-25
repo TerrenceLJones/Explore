@@ -1,7 +1,7 @@
 /* jshint unused: false */
 /* global ajax:true */
 /* global _:true */
-/* global google:true*/
+/* global google, locations:true*/
 /* global stops, session*/
 /* jshint camelcase:false */
 
@@ -13,12 +13,12 @@
   function init(){
     initMap(36.50,-98.35,4);
     geoLocation();
-    geolocationTimer();
     populateMap();
-    // populateStops();
     $('#find').click(geoLocation);
     $('#reroute').click(getDirections);
     $('#stop-task').on('click', '#complete', completeTask);
+    $('#demo').on('click',geoLocationSimulator);
+    $('#live').on('click',geoLocationTimer);
   }
 
   var map;
@@ -29,18 +29,16 @@
   var userTempPos;
   var waypoints = [];
   var journeyStops = [];
-  var currSess;
+  var currSess = session;
   var currStop;
   var currStopMarker;
 
   //======================Map functions
 
-  function geolocationTimer(){
-    currSess = session;
+  function geoLocationTimer(){
     setInterval(geoLocation,4000);
-    setInterval(showUserPosition,5000);
+    setTimeout(showUserPosition,5000);
     setTimeout(getDirections, 5000);
-
   }
 
   function geoLocation() {
@@ -50,6 +48,7 @@
         loc.lat = p.coords.latitude * 1;
         loc.lng = p.coords.longitude * 1;
         userTempPos = new google.maps.LatLng(p.coords.latitude, p.coords.longitude);
+        showUserPosition();
       },e=>console.log(e), options);
     }
     else {
@@ -57,35 +56,64 @@
     }
 
   }
+  function geoLocationSimulator(event){
+    getDirections();
+    var keys = Object.keys(locations);
+    var next=0;
+
+    keys.forEach(k=>{
+      k = k *1;
+      if(k === 0) {
+        removeUserMarker(userTempPos.k,userTempPos.A);
+        loc.lat = locations[k].coords.latitude * 1;
+        loc.lng = locations[k].coords.longitude * 1;
+        userTempPos = new google.maps.LatLng(locations[k].coords.latitude, locations[k].coords.longitude);
+        showUserPosition();
+      }
+      else {
+        setTimeout((function(pos){
+            return function() {
+              removeUserMarker(userTempPos.k,userTempPos.A);
+              loc.lat = pos.coords.latitude * 1;
+              loc.lng = pos.coords.longitude * 1;
+              userTempPos = new google.maps.LatLng(locations[k].coords.latitude, locations[k].coords.longitude);
+              showUserPosition();
+            };
+        })(locations[k]),next);
+      }
+      next+=locations[k].duration;
+    });
+
+    event.preventDefault();
+  }
 
   function showUserPosition() {
-    removeUserMarker(userTempPos.k,userTempPos.A);
     var icon = '/../img/journeyor.png';
-    addMarker(loc.lat,loc.lng, 'User', icon);
+    addMarker(loc.lat,loc.lng, `${user.username}`, icon);
     isUserAtStop();
   }
 
-  function removeUserMarker(prevLat,prevLng){
-    prevLat = prevLat.toFixed(2) * 1;
-    prevLng = prevLng.toFixed(2) * 1;
+  function removeUserMarker(userPrevLat,userPrevLng){
+    userPrevLat = userPrevLat.toFixed(2) * 1;
+    userPrevLng = userPrevLng.toFixed(2) * 1;
 
     markers.forEach(m=>{
-      var mlat = m.position.k.toFixed(2) * 1;
-      var mlng = m.position.A.toFixed(2) * 1;
+      var mlat = m.position.k.toFixed(2) *1;
+      var mlng = m.position.A.toFixed(2) *1;
 
-      if(mlat === prevLat && mlng === prevLng){
+      if(mlat === userPrevLat && mlng === userPrevLng){
         m.setMap(null);
       }
     });
   }
 
   function isUserAtStop(){
-    let currLat = loc.lat.toFixed(2) * 1;
-    let currLng = loc.lng.toFixed(2) * 1;
+    let currLat = loc.lat *1;
+    let currLng = loc.lng * 1;
 
     markers.forEach(m=>{
-      var mlat = m.position.k.toFixed(2) * 1;
-      var mlng = m.position.A.toFixed(2) * 1;
+      var mlat = m.position.k * 1;
+      var mlng = m.position.A * 1;
 
       if(mlat === currLat && mlng === currLng){
         stops.forEach(s=>{
@@ -180,8 +208,6 @@
         var latLng = new google.maps.LatLng(stop.lat,stop.lng);
         journeyStops.push({location:latLng, stopover:true});
         addMarker(stop.lat,stop.lng,stop.name);
-        console.log(journeyStops);
-        console.log(currStop);
       }
     });
   }
@@ -189,22 +215,11 @@
   function completeTask(){
     ajax(`/journeys/play/stop/task/complete`, 'POST', {stop:currStop, session:currSess}, html=>{
         $('#completed-stops').append(html);
-        currStopMarker.setMap(null);
+        // currStopMarker.setMap(null);
         // _.pull(journeyStops, );
-        getDirections();
+        // getDirections();
     });
   }
-
-  //
-  // function populateStops(){
-  //   stops.forEach(stop=>{
-  //     ajax(`/journeys/new/addstop`, 'POST', {location:stop}, html=>{
-  //       $('#stops').append(html);
-  //     });
-  //   });
-  // }
-
-
 
 
 

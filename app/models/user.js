@@ -1,4 +1,5 @@
 var users = global.nss.db.collection('users');
+var sessions = global.nss.db.collection('sessions');
 var traceur = require('traceur');
 var Base = traceur.require(__dirname + '/base.js');
 var bcrypt   = require('bcrypt');
@@ -150,6 +151,12 @@ class User {
     users.save(this, ()=>fn());
   }
 
+  findAllSessions(fn){
+    this._id = Mongo.ObjectID(this._id);
+    sessions.find({userId:this._id}).toArray((e,sessions)=>{
+      fn(sessions);
+    });
+  }
 
 
 

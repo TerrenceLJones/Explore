@@ -2,6 +2,7 @@
 
 var traceur = require('traceur');
 var User = traceur.require(__dirname + '/../models/user.js');
+// var Session = traceur.require(__dirname + '/../models/session.js');
 // var passport = require('passport');
 var multiparty = require('multiparty');
 
@@ -88,7 +89,7 @@ exports.logout = (req, res)=>{
 
 exports.profile = (req, res)=>{
   var username;
-  
+
   if(req.params.username === undefined){
     username = res.locals.user.username;
   }
@@ -97,8 +98,12 @@ exports.profile = (req, res)=>{
   }
 
   User.findByUsername(username, user=>{
-    console.log(user);
-    res.render('users/profile', {loggedInUser:res.locals.user, profileOwner:user, title: 'Dashboard'});
+    user.findAllSessions(sessions=>{
+      // Session.findJourneysBySessionId(sessions, journs=>{
+      //   console.log(journs);
+        res.render('users/profile', {sessions:sessions,loggedInUser:res.locals.user, profileOwner:user, title: 'Dashboard'});
+      // });
+    });
   });
 };
 

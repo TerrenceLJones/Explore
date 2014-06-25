@@ -6,6 +6,8 @@ block content
 
   button#find Find Me
   button#reroute Reroute
+  button#live Live
+  button#demo Demo
 
   #map
 
@@ -13,11 +15,14 @@ block content
   h2 Completed Stops
   #completed-stops
 
+
   #directions
 
 block scripts
   script.
+    var user = !{JSON.stringify(user)};
     var stops = !{JSON.stringify(stops)};
     var session = !{JSON.stringify(session)};
+  script(src='/js/es6/locations.js')
   script(src='/js/es6/compiled/journeys-play.js')
   script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAkGxXJrX6q8CPx3G8EI701g51AX_Xi914&sensor=true&libraries=weather')

@@ -88,7 +88,6 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
     switch(type) {
     case 'food':
       $('#badge').css('background-image','url("/img/badges/food.png")');
-
       $('#badge-type').val('food');
       break;
     case 'arts':

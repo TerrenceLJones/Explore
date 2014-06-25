@@ -4,7 +4,7 @@ var traceur = require('traceur');
 var Journey = traceur.require(__dirname + '/../models/journey.js');
 var Session = traceur.require(__dirname + '/../models/session.js');
 var User = traceur.require(__dirname + '/../models/user.js');
-var _ = require('lodash');
+// var _ = require('lodash');
 
 
 exports.index = (req, res)=>{
@@ -98,11 +98,27 @@ exports.stopTask = (req, res) =>{
 };
 
 exports.completeStop = (req,res) =>{
-  var stop = req.body.stop;
-  var session = _.create(Session.prototype, req.body.session);
-  session.completeStop(stop, ()=>{
-    res.render('journeys/complete-stop', {stop:stop}, (e,html)=>{
-    res.send(html);
+  Session.findById(req.body.session._id, session=>{
+    session.completeStop(req.body.stop, session=>{
+      Journey.findById(req.body.session.journeyId, journey=>{
+        Session.journeyStatus(session,res.locals.user,journey, response=>{
+          console.log(response);
+        //   console.log(response);
+        //   console.log('one step closer');
+        //   if(response ==='true'){
+        //     console.log('yep');
+        //     res.render('journeys/journey-complete', (e,html)=>{
+        //     res.send(html);
+        //     });
+        //   }
+        //   else{
+        //     console.log('nope');
+        //     res.render('journeys/complete-stop', {stop:stop}, (e,html)=>{
+        //     res.send(html);
+        //     });
+        //   }
+        });
+      });
     });
   });
 };

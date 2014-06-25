@@ -30,9 +30,19 @@ block content
     h3 Bio
     h5= profileOwner.tagLine
 
-  h3 Badges
   #badges
-  h3 Current Journeys
-  #current-journeys
-  h3 Past Journeys
-  #past-journeys
+    h3 Badges
+    each badge in profileOwner.badges
+      .badges-on-profile(style='background-image: url("#{badge}")')
+  //- #current-journeys
+  //-   h3 Current Journeys
+    //- each session in sessions
+    //-   -console.log('jade sessions')
+    //-   -console.log(session)
+    //- -console.log(journeys)
+      //- -if(session.journeyId.toString() === journey._id.toString())
+      //-   -if(session.isJourneyComplete === 'false')
+      //-     a(href='/journeys/play/#{journey.id}')
+      //-       #{jounrey.name}
+  //- h3 Past Journeys
+  //- #past-journeys

@@ -1,0 +1,62 @@
+extends ../shared/template
+
+block content
+  .edit-container
+    h1 Update Journey Information
+
+  form.journeys-edit-form(action='/journeys/#{journey._id}', method='POST')
+    .form-group
+      label Journey Name:
+      input.form-control(type='text', name='journeyName', autofocus=true, value=journey.name)
+    .form-group
+      label Your Location:
+      input.form-control(type='text', name='journeyLocation', autofocus=true, value=journey.location)
+    .from-group
+      label Your Type:
+      select#type.form-control(name='journeyType')
+        option Select a Journey Type
+        option(selected=(journey.type === 'food') ? true : false) Food
+        option(selected=(journey.type === 'arts') ? true : false) Arts
+        option(selected=(journey.type === 'sightseeing') ? true : false) Sightseeing
+        option(selected=(journey.type === 'music') ? true : false) Music
+        option(selected=(journey.type === 'outdoors') ? true : false) Outdoors
+        option(selected=(journey.type === 'other') ? true : false) Other
+      #badge
+        input#badge-type(type='hidden', name='journeyBadge', value=journey.badge)
+
+    .form-group
+      label Journey Description
+      textarea#journey-description.form-control(type='textarea', name=journey.desc)
+    .form-group
+      label Journey Tags
+      input#journey-tags.form-control(type='text', name='journeyTags', value=journey.tags)
+
+    #map
+
+    .form-group
+      label Add New Stops
+      input#stop-location.form-control(placeholder='Enter Vaild Location Name or Zip Code')
+      button#add.journey-addStop-edit.btn.btn-primary Add Location
+
+
+    #stops
+      h3 Stops
+
+    button#save.journey-save-edit.btn.btn-success Save Journey
+
+    form.journey-cancel-edit(action='/journeys/#{journey._id}')
+      button.button.button-rounded Cancel
+
+  .form-group.del-journey
+    h3 Delete Journey
+    form(action='/journeys/#{journey._id}/delete', method='POST')
+      input.form-control(type='password', name='password', placeholder='Enter Password')
+      button.delete-journey.btn.btn-danger Delete Journey
+
+
+
+block scripts
+  script.
+    var stops = !{JSON.stringify(journey.stops)};
+  script(src='/js/es6/compiled/journeys-edit.js')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAkGxXJrX6q8CPx3G8EI701g51AX_Xi914&sensor=true&libraries=weather')

@@ -1,0 +1,42 @@
+extends ../shared/template
+
+block content
+
+  .game-container
+    h1= journey.name
+
+    .play-mode-container
+      select#mode
+        option Select Mode
+        option Live
+        option Demo
+      button#play-mode.button.button-rounded Mode
+
+    #map
+
+    #journey-complete-container
+
+    .journey-game-data
+      form.exit-journey(action='/journeys/#{journey._id}')
+        button.button.button-rounded Save & Exit
+
+      h2 Stop Tasks
+      #stop-task
+
+      h2 Completed Stops
+      #completed-stops
+
+    .journey-game-controls
+      button#find.button.button-rounded Find Me
+      button#reroute.button.button-rounded Reroute
+
+      #directions
+
+block scripts
+  script.
+    var user = !{JSON.stringify(user)};
+    var stops = !{JSON.stringify(stops)};
+    var session = !{JSON.stringify(session)};
+  script(src='/js/es6/locations.js')
+  script(src='/js/es6/compiled/journeys-play.js')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAkGxXJrX6q8CPx3G8EI701g51AX_Xi914&sensor=true&libraries=weather')

@@ -1,0 +1,39 @@
+extends ../shared/template
+
+block content
+  .journey-show-container
+    h1= journey.name
+
+    form(action='/journeys/play/#{journey._id}')
+      button#journey-show-begin.button.glow.button-action Begin Journey
+
+    -if(loggedInUser._id.toString() === journey.creatorId.toString())
+      form(action='/journeys/#{journey._id}/edit')
+        button#journey-show-edit.button Edit
+
+    #map
+
+    .journey-show-stats
+      #journey-location-show
+        label Journey Location:
+        h5= journey.location
+      #journey-type-show
+        label Journey Type:
+        h5= journey.type
+      #journey-badge-show
+        label Journey Badge:
+        img.journey-badge-show(src='#{journey.badgeImg}')
+
+    #journey-show-stops
+      each stop in journey.stops
+        .journey-stops-show
+          h2= stop.name
+          h3= stop.location
+          h3= stop.desc
+
+  block scripts
+    script.
+      var stops = !{JSON.stringify(journey.stops)};
+    script(src='/js/es6/compiled/journeys.js')
+    script(src='/js/es6/compiled/game.js')
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAkGxXJrX6q8CPx3G8EI701g51AX_Xi914&sensor=true&libraries=weather')

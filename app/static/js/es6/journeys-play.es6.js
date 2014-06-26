@@ -33,13 +33,14 @@
   var currStopMarker;
   var simulatorTimer;
 
+
   //======================Map functions
 
   function geoLocationTimer(){
     setInterval(geoLocation,4000);
     setTimeout(showUserPosition,5000);
     setTimeout(getDirections, 5000);
-    setInterval(getNewSessionData, 5000);
+    simulatorTimer = setInterval(getNewSessionData, 5000);
   }
 
   function playMode(){
@@ -69,6 +70,9 @@
   function geoLocationSimulator(event){
     getDirections();
     simulatorTimer = setInterval(getNewSessionData, 5000);
+    console.log('inside simulator');
+    getDirections();
+    
     var keys = Object.keys(locations);
     var next=0;
 
@@ -254,6 +258,9 @@
       newSessionData = JSON.parse(newSessionData);
       currSess = newSessionData;
       checkJourneyStatus();
+        // currStopMarker.setMap(null);
+        // _.pull(journeyStops, );
+        // getDirections();
     });
   }
 

@@ -1,6 +1,25 @@
 extends ../shared/template
 
 block content
-  h1= title
+  .journeys-index-container
+    h1= title
+    .search-container
+      .journeys-filter
+          h3 Search
+          p You can search by Journey Name or Location
+          input#search-input(type=text, autofocus=true, placeholder='"Music Tour" or "Paris"')
+          button.btn.btn-primary#filter-journeys Search
+          //- p.commas Please separate search values by comma
+    .create-journey-index
+      form(action='/journeys/new')
+        button.create-journey-profile.btn.btn-success.btn-lg#create-journeys-page Create a Journey
 
-  #journeys
+    .journeys-index-container
+      #journeys
+        each journey in journeys
+          .journeys-on-index
+            a(href='/journeys/#{journey._id}')
+              img.journeys-search-badge(src='#{journey.badgeImg}')
+            a(href='/journeys/#{journey._id}')
+              h1= journey.name
+            h5= journey.location

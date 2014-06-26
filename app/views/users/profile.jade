@@ -1,37 +1,48 @@
 extends ../shared/template
 
 block content
-  h1= profileOwner.name
 
-  .profile-picture(style="background-image:url('#{user.photo}')")
+  .profile-container
+    .col-xs-12
+      .col-md-8
+        .profile-picture-container
+          .profile-picture(style="background-image:url('#{profileOwner.photo}')")
 
-  -if(loggedInUser._id.toString() === profileOwner._id.toString())
+        .user-info-container
+          #user-name
+            h1= profileOwner.name
+          #user-location
+            h3 Location:
+            h5= profileOwner.location
+          #user-join-date
+            h3 Join Date:
+            h5= moment(profileOwner.joinDate).format('MMMM Do YYYY')
+          #user-tag-line
+            h3 Tag
+            h5= profileOwner.tagLine
 
-    span: a(href='/#{profileOwner.username}/edit') Edit
 
-    form(action='/journeys')
-      button Find a Journey
+        -if(loggedInUser._id.toString() === profileOwner._id.toString())
 
-    form(action='/journeys/new')
-      button Create a Journey
+          form(action='/journeys')
+            button.start-journey-profile.btn.btn-success.btn-lg Start a Journey
 
-    form(action='/users/all')
-      button Follow other Users
+          form(action='/#{profileOwner.username}/edit')
+            button.edit-profile.button.button-border.button-rounded Edit Profile
 
-
-  #location
-    h3 Location:
-      h5= profileOwner.location
-  #join-date
-    h3 Join Date:
-    h5= moment(profileOwner.joinDate).format('MMMM Do YYYY')
-  #tag-line
-    h3 Bio
-    h5= profileOwner.tagLine
-
-  h3 Badges
-  #badges
-  h3 Current Journeys
-  #current-journeys
-  h3 Past Journeys
-  #past-journeys
+        .badges-container
+          h3 My Badges
+          each badge in profileOwner.badges
+            .badges-on-profile(style='background-image: url("#{badge}")')
+        //- #current-journeys
+        //-   h3 Current Journeys
+          //- each session in sessions
+          //-   -console.log('jade sessions')
+          //-   -console.log(session)
+          //- -console.log(journeys)
+            //- -if(session.journeyId.toString() === journey._id.toString())
+            //-   -if(session.isJourneyComplete === 'false')
+            //-     a(href='/journeys/play/#{journey.id}')
+            //-       #{jounrey.name}
+        //- h3 Past Journeys
+        //- #past-journeys

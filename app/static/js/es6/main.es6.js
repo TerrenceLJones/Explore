@@ -13,15 +13,27 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
   $(document).ready(init);
 
   function init(){
-    $('#filter').click(filter);
+    $('#filter-users').click(filterUsers);
+    $('#filter-journeys').click(filterJourneys);
   }
 
-  function filter(){
-    var search = $('#search').val();
+  function filterUsers(){
+    var searchParams = $('#search-input').val();
 
-    ajax(`/users`, 'get', {search:search}, html=>{
+    ajax(`/users`, 'get', {searchParams:searchParams}, html=>{
       $('#users').empty();
       $('#users').append(html);
+    });
+
+  }
+
+  function filterJourneys(){
+    var searchParams= $('#search-input').val();
+    console.log(searchParams);
+
+    ajax(`/journeys/search`, 'get', {searchParams:searchParams}, html=>{
+      $('#journeys').empty();
+      $('#journeys').append(html);
     });
 
   }

@@ -2,6 +2,7 @@
 
 var traceur = require('traceur');
 var User = traceur.require(__dirname + '/../models/user.js');
+// var Session = traceur.require(__dirname + '/../models/session.js');
 // var passport = require('passport');
 var multiparty = require('multiparty');
 
@@ -68,10 +69,10 @@ exports.loginLocal = (req, res)=>{
     if(user){
       req.session.userId = user._id;
       if(!user.isProfileInitialized){
-        res.redirect('/:username/edit');
+        res.redirect(`/${user.username}/edit`);
       }
       else{
-        res.redirect('/:username');
+        res.redirect(`/${user.username}`);
       }
     }
     else {
@@ -83,13 +84,26 @@ exports.loginLocal = (req, res)=>{
 
 exports.logout = (req, res)=>{
   req.session = null;
-  res.redirect('/login');
+  res.redirect('/');
 };
 
 exports.profile = (req, res)=>{
-  User.findByUsername(req.params.username, user=>{
-    console.log(user);
-    res.render('users/profile', {loggedInUser:res.locals.user, profileOwner:user, title: 'Dashboard'});
+  var username;
+
+  if(req.params.username === undefined){
+    username = res.locals.user.username;
+  }
+  else{
+    username = req.params.username;
+  }
+
+  User.findByUsername(username, user=>{
+    user.findAllSessions(sessions=>{
+      // Session.findJourneysBySessionId(sessions, journs=>{
+      //   console.log(journs);
+        res.render('users/profile', {sessions:sessions,loggedInUser:res.locals.user, profileOwner:user, title: 'Dashboard'});
+      // });
+    });
   });
 };
 
@@ -119,7 +133,7 @@ exports.newPassword = (req,res)=>{
   });
 };
 
-exports.destroyUserAccount = (req,res)=>{
+exports.destroy = (req,res)=>{
   User.destroyById(res.locals.user._id, ()=>{
     if(true){
       res.redirect('/');
@@ -135,9 +149,8 @@ exports.findAll = (req,res)=>{
 
 exports.filter = (req,res)=>{
   User.findById(res.locals.user._id, u=>{
-    u.filter(req.query.search, users=>{
-      console.log(users);
-        res.render('users/filter-partial',{users:users}, (e,html)=>{
+    u.filter(req.query.searchParams, users=>{
+        res.render('users/users-filter-partial',{users:users}, (e,html)=>{
           res.send(html);
         });
     });

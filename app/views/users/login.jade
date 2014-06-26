@@ -1,9 +1,28 @@
 extends ../shared/template
 
 block content
-  h1 Please Login
-
-  form#form-login(method='post', action='/login')
-    input#login-input-email(type='email', name='username', placeholder='Email or Username')
-    input#login-input-password(type='password', name='password', placeholder='Password')
-    button#submit-login Login
+  body.modal-open
+    .modal.fade.bs-modal-sm.in#myModal(tabindex="-1",role="dialog",aria-labelledby="mySmallModalLabel",aria-hidden="false" ,style="display: block;")
+      .modal-dialog.modal-sm
+        .modal-content
+          br
+          .bs-example.bs-example-tabs
+            ul#myTab.nav.nav-tabs
+              li.active
+                a(href="#signin", data-toggle="tab") Log In
+          .modal-body
+            #myTabContent.tab-content
+              .tab-pane.fade.active.in#signin
+                form.form-horizontal#form-login(method='post', action='/login')
+                  fieldset
+                    .control-group
+                      .controls
+                        label.control-label Email or Username
+                        input#login-input-email(type='text', name='username', placeholder='Email or Username', class="form-control",class="input-medium")
+                    .control-group
+                      .controls
+                        label.control-label Password
+                        input#login-input-password(type='password', class="form-control", name='password', placeholder='********', class="input-medium")
+                    .control-group
+                      .controls
+                        button#submit-login.btn.btn-success Login

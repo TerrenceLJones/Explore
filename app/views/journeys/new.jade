@@ -1,8 +1,50 @@
 extends ../shared/template
 
 block content
-  h1= title
+  .edit-container
+    h1 Create a New Journey
 
-  form(method='POST', action='/journeys')
-    label Journey Name
-    input(type='text', name=name, autofocus='true')
+    form.journeys-creation-form(method='POST', action='/journeys')#journey-form
+      .form-group
+        label Journey Name
+        input#name.form-control(type='text', name='journeyName', autofocus='true')
+      .form-group
+        label Journey Location
+        input#journey-location.form-control(type='text', name='journeyLocation')
+      .form-group
+        label Journey Type
+        select#type.form-control(name='journeyType')
+          option Select a Journey Type
+          option Food
+          option Arts
+          option Sightseeing
+          option Music
+          option Outdoors
+          option Other
+        #badge
+        input#badge-type(type='hidden', name='journeyBadge', value='')
+      .form-group
+        label Journey Description
+        textarea#journey-description.form-control(type='textarea', name='journeyDesc')
+      .form-group
+        label Journey Tags
+        input#journey-tags.form-control(type='text', name='journeyTags')
+
+      #map
+
+      .form-group
+        label Add New Stops
+        input#stop-location.form-control(placeholder='Enter Zip Code')
+        button#add.journey-addStop-create.btn.btn-primary Add Location
+
+      #stops
+        h3 Stops
+
+      button#create.journey-create.btn.btn-success Create Journey
+
+    form(action='/journeys')
+      button.journey-cancel-create.button.button-rounded Cancel
+
+block scripts
+  script(src='/js/es6/compiled/journeys.js')
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAkGxXJrX6q8CPx3G8EI701g51AX_Xi914&sensor=true&libraries=weather')

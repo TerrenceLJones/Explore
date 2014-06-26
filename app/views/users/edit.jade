@@ -5,7 +5,7 @@ block content
     h1 Update Profile Information
     h4= user.name
 
-    form.users-edit-form(role="form",action='/#{user.username}', method='POST', enctype='multipart/form-data')
+    form.users-edit-form(role="form",action='/#{user._id}', method='POST', enctype='multipart/form-data')
       .form-group
         label Your Email:
         input.form-control(type='text', name='email', autofocus=true, value=user.email)
@@ -26,8 +26,13 @@ block content
         input(type='file', name='photo')
       button.user-save-edit.btn.btn-success Save Profile
 
-    form.user-cancel-edit(action='/#{user.username}')
-      button.button.button-rounded Cancel
+    -if(user.isProfileInitialized === false)
+      form.user-cancel-edit(action='/logout')
+        button.button.button-rounded Exit
+
+    -if(user.isProfileInitialized === true)
+      form.user-cancel-edit(action='/#{user.username}')
+        button.button.button-rounded Cancel
 
 
     .form-group.cng-pass

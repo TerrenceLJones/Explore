@@ -99,26 +99,31 @@ exports.stopTask = (req, res) =>{
 
 exports.completeStop = (req,res) =>{
   Session.findById(req.body.session._id, session=>{
-    session.completeStop(req.body.stop, session=>{
-      Journey.findById(req.body.session.journeyId, journey=>{
-        Session.journeyStatus(session,res.locals.user,journey, response=>{
-          console.log(response);
-        //   console.log(response);
-        //   console.log('one step closer');
-        //   if(response ==='true'){
-        //     console.log('yep');
-        //     res.render('journeys/journey-complete', (e,html)=>{
-        //     res.send(html);
-        //     });
-        //   }
-        //   else{
-        //     console.log('nope');
-        //     res.render('journeys/complete-stop', {stop:stop}, (e,html)=>{
-        //     res.send(html);
-        //     });
-        //   }
-        });
+    session.completeStop(req.body.stop, ()=>{
+      res.render('journeys/complete-stop', {stop:req.body.stop}, (e,html)=>{
+        console.log(html);
+        res.send(html);
       });
     });
+  });
+};
+exports.status = (req,res)=>{
+  Journey.findById(req.body.session.journeyId, journey=>{
+    Session.journeyStatus(req.body.session,res.locals.user,journey, response=>{
+      if(response === true){
+        res.render('journeys/journey-complete',{user:res.locals.user,journey:journey}, (e,html)=>{
+          res.send(html);
+        });
+      }
+      else{
+        res.send(204);
+      }
+    });
+  });
+};
+exports.freshData = (req,res) =>{
+  Session.findById(req.body.session._id, session=>{
+    session = JSON.stringify(session);
+    res.send(session);
   });
 };

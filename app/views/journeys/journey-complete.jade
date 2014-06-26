@@ -1,4 +1,5 @@
-h2 Congradulations You Have Completed #{journey.name}!
-img(src='#{journey.badge}')
-form.exit-finished-journey(action='/#{user.username}')
-  button.button.button-rounded Exit
+.journey-compltion-container
+  h2 Congradulations You Have Completed #{journey.name}!
+  img(src='#{journey.badgeImg}')
+  form.exit-finished-journey(action='/#{user.username}')
+    button.button.button-rounded Exit

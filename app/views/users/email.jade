@@ -1,11 +1,13 @@
 extends ../shared/template
 
 block content
-  p. Please check your email to complete signup.
-  p
-   | If page does not redirect in 5 seconds please click 
-   a(href='/') here
-   |  to return home.
+  .verify-email-container
+    .text-container
+      p. Please check your email to complete signup.
+      p
+       | If page does not redirect in 5 seconds please click
+       a(href='/') here
+       |  to return home.
 
   script.
     var redirectTime = "4000";

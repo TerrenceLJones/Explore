@@ -68,8 +68,8 @@ exports.loginLocal = (req, res)=>{
   User.login(req.body, user=>{
     if(user){
       req.session.userId = user._id;
-      if(!user.isProfileInitialized){
-        res.redirect(`/${user.username}/edit`);
+      if(!user.isProfileInitialized){    //
+        res.redirect(`/${user._id}/edit`);
       }
       else{
         res.redirect(`/${user.username}`);

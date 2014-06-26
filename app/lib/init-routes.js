@@ -53,11 +53,14 @@ function load(app, fn){
   app.post('/journeys/new/addstop', dbg, journeys.addStop);
   app.post('/journeys/play/stop/task', dbg, journeys.stopTask);
   app.post('/journeys/play/stop/task/complete', dbg, journeys.completeStop);
+  app.post('/journeys/play/status', dbg, journeys.status);
+  app.post('/journeys/play/sessiondata', dbg, journeys.freshData);
   app.get('/journeys/play/:id', journeys.play);
-  app.get('/journeys/:id', dbg, journeys.show);
   app.get('/journeys/:id/edit', dbg, journeys.edit);
   app.post('/journeys/:id/delete', dbg, journeys.destroy);
+  app.get('/journeys/:id', dbg, journeys.show);
   app.post('/journeys/:id', dbg, journeys.update);
+
 
   app.get('/dash', dbg, users.profile);
 
@@ -65,7 +68,8 @@ function load(app, fn){
 
   app.get('/users/all', dbg, users.findAll);
   app.get('/users', dbg, users.filter);
-  
+
+  // app.get('/user/:id', dbg, users.profile);
   app.get('/:username', dbg, users.profile);
   app.get('/:username/edit', dbg, users.edit);
   app.post('/:username',dbg, users.update);

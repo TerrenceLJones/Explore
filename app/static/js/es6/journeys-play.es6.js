@@ -70,9 +70,6 @@
   function geoLocationSimulator(event){
     getDirections();
     simulatorTimer = setInterval(getNewSessionData, 5000);
-    console.log('inside simulator');
-    getDirections();
-    
     var keys = Object.keys(locations);
     var next=0;
 
@@ -248,7 +245,6 @@
         $('.journey-game-data').empty();
         $('#journey-complete-container').append(html);
         clearInterval(simulatorTimer);
-
       }
 
     });
@@ -260,8 +256,8 @@
       checkJourneyStatus();
         // currStopMarker.setMap(null);
         // _.pull(journeyStops, );
-        // getDirections();
     });
   }
+
 
 })();

@@ -1,5 +1,7 @@
 each user in users
-  .user
-    img.filter-profile-pic(src='#{user.photo}')
-    h5= user.name
+  .user-profile-index-page
+    a(href='/#{user.username}')
+      img.user-search-profile-picture(src='#{user.photo}')
+    a(href='/#{user.username}')
+      h5= user.name
     h6= user.tagLine

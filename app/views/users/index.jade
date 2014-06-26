@@ -1,16 +1,22 @@
 extends ../shared/template
 
 block content
-  h1= title
-  h3 Search
-  input#search(type=text, autofocus=true)
-  button#filter-users Search
 
-  #users
-    each user in users
-      .user
-        a(href='/#{user.username}')
-          img.profile-picture(src='#{user.photo}')
-        a(href='/#{user.username}')
-          h5= user.name
-        h6= user.tagLine
+  //- .col-xs-12
+  //-   .col-md-8
+  .users-index-container
+    h1= title
+    .search-container
+      .users-filter
+          h3 Search
+          p You can search by the User's Name, Username or Location
+          input#search-input(type=text, autofocus=true, placeholder='"John" or "New York"')
+          button.btn.btn-primary#filter-users Search
+    #users
+      each user in users
+        .user-profile-index-page
+          a(href='/#{user.username}')
+            img.user-search-profile-picture(src='#{user.photo}')
+          a(href='/#{user.username}')
+            h5= user.name
+          h6= user.tagLine

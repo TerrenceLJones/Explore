@@ -1,52 +1,96 @@
 extends ../shared/template
 
 block content
+  .container
+    .row.clearfix
+      .col-md-12.column
+        .row.clearfix
+          .carousel.slide#carousel-837183
+            ol.carousel-indicators
+              li(data-slide-to="0" data-target="#carousel-837183")
+              li(data-slide-to="1" data-target="#carousel-837183")
+              li(data-slide-to="2" data-target="#carousel-837183" class="active")
+            .carousel-inner
+              .item
+                img(alt="" src="http://lorempixel.com/1600/500/sports/1")
+              .item
+                img(alt="" src="http://lorempixel.com/1600/500/sports/2")
+              .item.active
+                img(alt="" src="http://lorempixel.com/1600/500/sports/3")
+            a.left.carousel-control(href="#carousel-837183" data-slide="prev")
+              span.glyphicon.glyphicon-chevron-left
+            a.right.carousel-control(href="#carousel-837183" data-slide="next")
+              span.glyphicon.glyphicon-chevron-right
+          .col-md-12.column
+            .jumbotron
+              h1 Ready to Explore!
+              p
+                button.btn.btn-primary.btn-lg(href="#signup" data-toggle="modal" data-target=".bs-modal-sm") Begin
 
-  .jumbotron
-    h1 Ready to Explore!
-    p
-      button.btn.btn-primary.btn-lg(href="#signup" data-toggle="modal" data-target=".bs-modal-sm") Begin
+            //**********Modal**************//
+            .modal.fade.bs-modal-sm#myModal(tabindex="-1",role="dialog",aria-labelledby="mySmallModalLabel",aria-hidden="true")
+              .modal-dialog.modal-sm
+                .modal-content
+                  br
+                  .bs-example.bs-example-tabs
+                    ul#myTab.nav.nav-tabs
+                      li.active
+                        a(href="#signin", data-toggle="tab") Log In
+                      li
+                        a(class='',href="#signup", data-toggle="tab") Register
+                  .modal-body
+                    #myTabContent.tab-content
+                      .tab-pane.fade.active.in#signin
+                        form.form-horizontal#form-login(method='post', action='/login')
+                          fieldset
+                            .control-group
+                              .controls
+                                label.control-label Email or Username
+                                input#login-input-email(type='text', name='username', placeholder='Email or Username', class="form-control",class="input-medium")
+                            .control-group
+                              .controls
+                                label.control-label Password
+                                input#login-input-password(type='password', class="form-control", name='password', placeholder='********', class="input-medium")
+                            .control-group
+                              .controls
+                                button#submit-login.btn.btn-success Login
 
-  .modal.fade.bs-modal-sm#myModal(tabindex="-1",role="dialog",aria-labelledby="mySmallModalLabel",aria-hidden="true")
-    .modal-dialog.modal-sm
-      .modal-content
-        br
-        .bs-example.bs-example-tabs
-          ul#myTab.nav.nav-tabs
-            li.active
-              a(href="#signin", data-toggle="tab") Sign In
-            li
-              a(class='',href="#signup", data-toggle="tab") Register
-        .modal-body
-          #myTabContent.tab-content
-            .tab-pane.fade.active.in#signin
-              form.form-horizontal#form-login(method='post', action='/login')
-                fieldset
-                  .control-group
-                    .controls
-                      label.control-label Email or Username
-                      input#login-input-email(type='text', name='username', placeholder='Email or Username', class="form-control",class="input-medium")
-                  .control-group
-                    .controls
-                      label.control-label Password
-                      input#login-input-password(type='password', class="form-control", name='password', placeholder='********', class="input-medium")
-                  .control-group
-                    .controls
-                      button#submit-login.btn.btn-success Login
+                      .tab-pane.fade#signup
+                        fieldset
+                          form.form-horizontal#form-register(method='post', action='/signup')
+                            .control-group
+                              .controls
+                                label.control-label Email
+                                input#register-input-email(type='email', name='email', class="form-control", placeholder='Enter a Vaild Email', autofocus=true, class="input-large")
+                            .control-group
+                              .controls
+                                label.control-label Password
+                                input#register-input-password(type='password', name='password',class="form-control", placeholder='********', class="input-large")
+                            .control-group
+                              .controls
+                                button#confirmsignup.btn.btn-success Sign Up
+                .modal-footer
+                  button(type="button",class="btn btn-default", data-dismiss="modal") Close
 
-            .tab-pane.fade#signup
-              fieldset
-                form.form-horizontal#form-register(method='post', action='/signup')
-                  .control-group
-                    .controls
-                      label.control-label Email
-                      input#register-input-email(type='email', name='email', class="form-control", placeholder='Enter a Vaild Email', autofocus=true, class="input-large")
-                  .control-group
-                    .controls
-                      label.control-label Password
-                      input#register-input-password(type='password', name='password',class="form-control", placeholder='********', class="input-large")
-                  .control-group
-                    .controls
-                      button#confirmsignup.btn.btn-success Sign Up
-      .modal-footer
-        button(type="button",class="btn btn-default", data-dismiss="modal") Close
+
+    //- .row.clearfix
+    //-   .col-md-12.column
+    //-       img(alt="140x140" src="http://lorempixel.com/140/140/")
+    //-       h2 Heading
+    //-       p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+    //-       p
+    //-       a.btn(href="#") View details »
+    //- .row.clearfix
+    //-   .col-md-12.column
+    //-       img(alt="140x140" src="http://lorempixel.com/140/140/" class="img-rounded")
+    //-       h2 Heading
+    //-       p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+    //-       p
+    //-         a(class="btn" href="#") View details »
+    //- .row.clearfix
+    //-   .col-md-12.column
+    //-       img(alt="140x140" src="http://lorempixel.com/140/140/")
+    //-       h2 Heading
+    //-       p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+    //-       p
+    //-       a.btn(href="#") View details »

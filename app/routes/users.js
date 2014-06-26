@@ -149,7 +149,7 @@ exports.findAll = (req,res)=>{
 
 exports.filter = (req,res)=>{
   User.findById(res.locals.user._id, u=>{
-    u.filter(req.query.search, users=>{
+    u.filter(req.query.searchParams, users=>{
         res.render('users/users-filter-partial',{users:users}, (e,html)=>{
           res.send(html);
         });

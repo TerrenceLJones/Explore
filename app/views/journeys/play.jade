@@ -1,22 +1,36 @@
 extends ../shared/template
 
 block content
-  h1= journey.name
-  h2= journey.location
 
-  button#find Find Me
-  button#reroute Reroute
-  button#live Live
-  button#demo Demo
+  .game-container
+    h1= journey.name
 
-  #map
+    .play-mode-container
+      select#mode
+        option Select Mode
+        option Live
+        option Demo
+      button#play-mode.button.button-rounded Mode
 
-  #stop-task
-  h2 Completed Stops
-  #completed-stops
+    #map
 
+    #journey-complete-container
 
-  #directions
+    .journey-game-data
+      form.exit-journey(action='/journeys/#{journey._id}')
+        button.button.button-rounded Save & Exit
+
+      h2 Stop Tasks
+      #stop-task
+
+      h2 Completed Stops
+      #completed-stops
+
+    .journey-game-controls
+      button#find.button.button-rounded Find Me
+      button#reroute.button.button-rounded Reroute
+
+      #directions
 
 block scripts
   script.

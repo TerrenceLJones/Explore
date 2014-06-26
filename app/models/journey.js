@@ -117,14 +117,12 @@ class Journey {
   }
 
   static filter(searchParams, fn) {
-    searchParams.name = searchParams.name.toLowerCase();
-    searchParams.location = searchParams.location.toLowerCase();
-    searchParams.type = searchParams.type.toLowerCase();
+    searchParams = searchParams.toLowerCase().trim();
 
-    journeys.find({ $or: [ {location:searchParams.location },
-                          { name:searchParams.name },
-                        { type:searchParams.type}
-                      ]
+    journeys.find({ $or: [ {location:searchParams},
+                           {name:searchParams},
+                           {type:searchParams}
+                          ]
                     }).toArray((err, journeys)=>{
                         journeys = journeys.map(j=>_.create(Journey.prototype, j));
                         fn(journeys);

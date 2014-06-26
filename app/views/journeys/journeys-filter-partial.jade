@@ -1,5 +1,7 @@
 each journey in journeys
-  .journey
-    h3= journey.name
-    h4= journey.location
-    h4= journey.type
+  .journeys-on-index
+    a(href='/journeys/#{journey._id}')
+      img.journeys-search-badge(src='#{journey.badgeImg}')
+    a(href='/journeys/#{journey._id}')
+      h1= journey.name
+    h5= journey.location

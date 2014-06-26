@@ -91,16 +91,18 @@ class User {
     });
   }
 
-  filter(searchParams, fn) {
-    searchParams = searchParams.toLowerCase().replace(/,/g,' ').split(' ').filter(Boolean);
-    users.find({ $or: [ { location: { $in: searchParams} },
-                        { name:     { $in: searchParams } },
-                        { username: { $in: searchParams } }
+   filter(searchParams, fn) {
+    searchParams = searchParams.toLowerCase().trim();
+
+    users.find({$or: [ {location:searchParams },
+                       {name:searchParams},
+                       {username:searchParams}
                       ]
                     }).toArray((err, users)=>{
                         users = users.map(u=>_.create(User.prototype, u));
-                        // users = users.filter(u=>this._id.toString()!==u._id.toString());
+                    //     // users = users.filter(u=>this._id.toString()!==u._id.toString());
                         fn(users);
+
          });
   }
 
@@ -171,8 +173,6 @@ function sendVerificationEmail(user, fn){
   var key = process.env.MAILGUN;
   var url = 'https://api:' + key + '@api.mailgun.net/v2/sandbox3bdc41df5efa46f0bdd1b697b000734f.mailgun.org/messages';
   var post = request.post(url, function(err, response, body){
-    console.log('SENDING MESSAGE***********');
-    console.log(body);
     fn(user);
   });
 
@@ -180,7 +180,7 @@ function sendVerificationEmail(user, fn){
   form.append('from', 'admin@explore.com');
   form.append('to', user.email);
   form.append('subject', 'Please verify your email address on Expore');
-  form.append('html', `<a href="http://localhost:3000/verify/${user._id}">Click to Verify</a>`);
+  form.append('html', `<a href="http://localhost:3000/verify/${user._id}">Hello and Welcome to Explore! To Begin Your Journey please follow the link to verify your email!</a>`);
 }
 
 module.exports = User;

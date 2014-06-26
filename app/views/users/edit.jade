@@ -1,36 +1,43 @@
 extends ../shared/template
 
 block content
-  #edit-container
-    p Edit Profile
-    p.email= user.email
+  .edit-container
+    h1 Update Profile Information
+    h4= user.name
 
-  h1 Update Profile Information
-  form(action='/#{user.username}', method='POST', enctype='multipart/form-data')
-    label Your Email:
-    input(type='text', name='email', autofocus=true, value=user.email)
-    label Your Name:
-    input(type='text', name='name', value=user.name)
-    label Your Username:
-    input(type='text', name='username', value=user.username)
-    label Your Location:
-    input(type='text',name='location', value=user.location)
-    label Your Tag Line:
-    input(type='text', name='tagLine', value= user.tagLine)
-    label Your Profile Picture:
-    input(type='file', name='photo')
-    button Save Profile
+    form.users-edit-form(role="form",action='/#{user.username}', method='POST', enctype='multipart/form-data')
+      .form-group
+        label Your Email:
+        input.form-control(type='text', name='email', autofocus=true, value=user.email)
+      .form-group
+        label Your Name:
+        input.form-control(type='text', name='name', value=user.name)
+      .form-group
+        label Your Username:
+        input.form-control(type='text', name='username', value=user.username)
+      .form-group
+        label Your Location:
+        input.form-control(type='text',name='location', value=user.location)
+      .form-group
+        label Your Tag Line:
+        input.form-control(type='text', name='tagLine', value= user.tagLine)
+      .form-group
+        label Your Profile Picture:
+        input(type='file', name='photo')
+      button.user-save-edit.btn.btn-success Save Profile
 
-  form(action='/#{user.username}')
-    button Cancel
+    form.user-cancel-edit(action='/#{user.username}')
+      button.button.button-rounded Cancel
 
 
-  h2 Change Password
-  form(action='/#{user.username}/password/new', method='POST')
-    input(type='password', name='password', placeholder='Enter New Password')
-    button Save Password
+    .form-group.cng-pass
+      h3 Change Password
+      form(action='/#{user.username}/password/new', method='POST')
+        input.form-control(type='password', name='password', placeholder='Enter New Password')
+        button.user-save-password.btn.btn-success Save Password
 
-  h3 Delete Account
-    form(action='/#{user.username}/delete/#{user._id}', method='POST')
-      input(type='password', name='password', placholder='Enter Password')
-      button Delete Account
+    .form-group.del-acct
+      h3 Delete Account
+      form(action='/#{user.username}/delete/#{user._id}', method='POST')
+        input.form-control(type='password', name='password', placeholder='Enter Password')
+        button.user-delete-account.btn.btn-danger Delete Account

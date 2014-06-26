@@ -17,8 +17,7 @@
     $('#find').click(geoLocation);
     $('#reroute').click(getDirections);
     $('#stop-task').on('click', '#complete', completeTask);
-    $('#demo').on('click',geoLocationSimulator);
-    $('#live').on('click',geoLocationTimer);
+    $('#play-mode').on('click',playMode);
   }
 
   var map;
@@ -41,6 +40,15 @@
     setTimeout(getDirections, 5000);
   }
 
+  function playMode(){
+    var mode = $('#mode option:selected').text().toLowerCase();
+    if(mode === 'demo'){
+      geoLocationSimulator();
+    }
+    else{
+      geoLocationTimer(); 
+    }
+  }
   function geoLocation() {
     if (navigator.geolocation) {
       var options = {enableHighAccuracy: true, timeout: 60000, maximumAge: 0};
@@ -57,6 +65,7 @@
 
   }
   function geoLocationSimulator(event){
+    console.log('inside simulator');
     getDirections();
     var keys = Object.keys(locations);
     var next=0;

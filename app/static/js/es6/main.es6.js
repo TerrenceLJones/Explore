@@ -18,9 +18,9 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
   }
 
   function filterUsers(){
-    var search = $('#search').val();
+    var searchParams = $('#search-input').val();
 
-    ajax(`/users`, 'get', {search:search}, html=>{
+    ajax(`/users`, 'get', {searchParams:searchParams}, html=>{
       $('#users').empty();
       $('#users').append(html);
     });
@@ -28,10 +28,8 @@ function ajax(url, type, data={}, success=r=>console.log(r), dataType='html'){
   }
 
   function filterJourneys(){
-    var searchParams={};
-      searchParams.name = $('#search-name').val();
-      searchParams.location = $('#search-location').val();
-      searchParams.type = $('#search-type option:selected').text();
+    var searchParams= $('#search-input').val();
+    console.log(searchParams);
 
     ajax(`/journeys/search`, 'get', {searchParams:searchParams}, html=>{
       $('#journeys').empty();

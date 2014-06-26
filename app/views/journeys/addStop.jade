@@ -1,10 +1,11 @@
 //- -location.lat = (location.lat *1).toFixed(2)
 //- -location.lng = (location.lng *1).toFixed(2)
 
-.stop(name='#{location.name}')
-    input.stop-name(type='text', name='stopName', value=location.name)
-    input.stop-lat(type='hidden',name='stopLat', value=location.lat)
-    input.stop-lng(type='hidden',name='stopLng', value=location.lng)
+.journey-stop-form(name='#{location.name}')
+  .form-group
+    input.stop-name.form-control(type='text', name='stopName', value=location.name)
+    input.stop-lat.form-control(type='hidden',name='stopLat', value=location.lat)
+    input.stop-lng.form-control(type='hidden',name='stopLng', value=location.lng)
     //- input.stop-address(type='text', name='stopAddress', value= location.address)
-    textarea.stop-description(type='text', name='stopDesc', placeholder='Enter a description')
-    button.delete-stop Delete Stop
+    textarea.stop-description.form-control(type='text', name='stopDesc', placeholder='Enter a description')
+    button.delete-stop.btn.btn-warning Delete Stop

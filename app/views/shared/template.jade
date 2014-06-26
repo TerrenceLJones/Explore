@@ -7,6 +7,7 @@ html
     link(href='/css/bootstrap.min.css', rel='stylesheet')
     link(href='/css/bootstrap-theme.min.css', rel='stylesheet')
     link(href='/css/normalize.css', rel='stylesheet')
+    link(href='/css/buttons.css', rel='stylesheet')
     link(href='/less/app.css', rel='stylesheet')
     link(rel="icon" href="data:;base64,=")
 
@@ -29,6 +30,8 @@ html
               li
                 a(href='/journeys') Find Journeys
               li
+                a(href='/journeys/new') Create a Journey
+              li
                 a(href='/users/all') Search People
             ul.nav.navbar-nav.navbar-right
               li.dropdown
@@ -37,7 +40,9 @@ html
                   b.caret
                 ul.dropdown-menu
                   li
-                    a(href='/#{user.username}') Dash
+                    a(href='/#{user.username}') Profile
+                  li
+                    a(href='/#{user.username}/edit') Edit Profile
                   li
                     a(href='/logout') Logout
 
@@ -46,6 +51,7 @@ html
     script(src='/js/vendor/jquery-2.1.1.js')
     script(src='/js/vendor/lodash-2.4.1.js')
     script(src='/js/vendor/moment-2.6.0.js')
+    script(src='/js/vendor/buttons.js')
     script(src='/js/vendor/traceur.js')
     script(src='/socket.io/socket.io.js')
     script(src='/js/vendor/bootstrap.min.js')

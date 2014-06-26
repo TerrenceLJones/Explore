@@ -1,43 +1,49 @@
 extends ../shared/template
 
 block content
-  h1= title
+  .edit-container
+    h1 Create a New Journey
 
-  form(method='POST', action='/journeys')#journey-form
-    label Journey Name
-    input#name(type='text', name='journeyName', autofocus='true')
+    form.journeys-creation-form(method='POST', action='/journeys')#journey-form
+      .form-group
+        label Journey Name
+        input#name.form-control(type='text', name='journeyName', autofocus='true')
+      .form-group
+        label Journey Location
+        input#journey-location.form-control(type='text', name='journeyLocation')
+      .form-group
+        label Journey Type
+        select#type.form-control(name='journeyType')
+          option Select a Journey Type
+          option Food
+          option Arts
+          option Sightseeing
+          option Music
+          option Outdoors
+          option Other
+        #badge
+        input#badge-type(type='hidden', name='journeyBadge', value='')
+      .form-group
+        label Journey Description
+        textarea#journey-description.form-control(type='textarea', name='journeyDesc')
+      .form-group
+        label Journey Tags
+        input#journey-tags.form-control(type='text', name='journeyTags')
 
-    label Journey Location
-    input#journey-location(type='text', name='journeyLocation')
+      #map
 
-    label Journey Type
-    select#type(name='journeyType')
-      option Select a Journey Type
-      option Food
-      option Arts
-      option Sightseeing
-      option Music
-      option Outdoors
-      option Other
+      .form-group
+        label Add New Stops
+        input#stop-location.form-control(placeholder='Enter Zip Code')
+        button#add.journey-addStop-create.btn.btn-primary Add Location
 
-    label Journey Description
-    textarea#journey-description(type='textarea', name='journeyDesc')
+      #stops
+        h3 Stops
 
-    label Journey Tags
-    input#journey-tags(type='text', name='journeyTags')
+      button#create.journey-create.btn.btn-success Create Journey
 
-    #badge
-    input#badge-type(type='hidden', name='journeyBadge', value='')
-    #map
-
-    label Add New Stops
-    input#stop-location(placeholder='Enter Zip Code')
-    button#add Add Location
-
-    label Stops
-    #stops
-
-    button#create Create
+    form(action='/journeys')
+      button.journey-cancel-create.button.button-rounded Cancel
 
 block scripts
   script(src='/js/es6/compiled/journeys.js')

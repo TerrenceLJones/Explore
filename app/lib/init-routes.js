@@ -59,22 +59,20 @@ function load(app, fn){
   app.post('/journeys/:id/delete', dbg, journeys.destroy);
   app.post('/journeys/:id', dbg, journeys.update);
 
-
-
-
-  // app.get('/journeys/:journeyname', dbg, journeys.show);
-
   app.get('/dash', dbg, users.profile);
 
   app.get('/favicon.ico', dbg, home.favicon);
+
+  app.get('/users/all', dbg, users.findAll);
+  app.get('/users', dbg, users.filter);
+  
   app.get('/:username', dbg, users.profile);
   app.get('/:username/edit', dbg, users.edit);
   app.post('/:username',dbg, users.update);
   app.post('/:username/password/new', dbg, users.newPassword);
   app.post('/:username/delete/:id', dbg, users.destroy);
 
-  app.get('/users/all', dbg, users.findAll);
-  app.get('/users', dbg, users.filter);
+
 
 
   fn();

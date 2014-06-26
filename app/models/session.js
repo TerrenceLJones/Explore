@@ -83,7 +83,6 @@ class Session {
       session.stops.push(newStop);
 
     });
-
     sessions.save(session, ()=>fn(session));
   }
 
@@ -99,9 +98,12 @@ class Session {
 
   static journeyStatus(session,user,journey,fn){
     user._id = Mongo.ObjectID(user._id);
-
-    var stopsRemain = _.some(session.stops, {'isComplete': false });
+    
+    var stopsRemain = _.some(session.stops, {'isComplete': 'false'});
+    console.log('stopsRemail');
+    console.log(stopsRemain);
     if (stopsRemain === false){
+      session._id = Mongo.ObjectID(session._id);
       sessions.update({_id:session._id}, {$set:{isJourneyComplete: true}}, ()=>{});
       users.update({_id:user._id},{$push: {badges:journey.badgeImg}},()=>fn(true));
     }

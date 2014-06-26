@@ -31,6 +31,7 @@
   var currSess = session;
   var currStop;
   var currStopMarker;
+  var simulatorTimer;
 
   //======================Map functions
 
@@ -38,6 +39,7 @@
     setInterval(geoLocation,4000);
     setTimeout(showUserPosition,5000);
     setTimeout(getDirections, 5000);
+    setInterval(getNewSessionData, 5000);
   }
 
   function playMode(){
@@ -46,7 +48,7 @@
       geoLocationSimulator();
     }
     else{
-      geoLocationTimer(); 
+      geoLocationTimer();
     }
   }
   function geoLocation() {
@@ -65,8 +67,8 @@
 
   }
   function geoLocationSimulator(event){
-    console.log('inside simulator');
     getDirections();
+    simulatorTimer = setInterval(getNewSessionData, 5000);
     var keys = Object.keys(locations);
     var next=0;
 
@@ -230,9 +232,28 @@
   function completeTask(){
     ajax(`/journeys/play/stop/task/complete`, 'POST', {stop:currStop, session:currSess}, html=>{
         $('#completed-stops').append(html);
-        // currStopMarker.setMap(null);
         // _.pull(journeyStops, );
-        // getDirections();
+    });
+  }
+  function checkJourneyStatus(){
+    ajax(`/journeys/play/status`, 'POST', {session:currSess}, html=>{
+      console.log(html);
+      if(typeof html === 'string'){
+        console.log('in here');
+        $('.journey-game-controls').empty();
+        $('.journey-game-data').empty();
+        $('#journey-complete-container').append(html);
+        clearInterval(simulatorTimer);
+
+      }
+
+    });
+  }
+  function getNewSessionData(){
+    ajax(`/journeys/play/sessiondata`, 'POST', {session:currSess}, newSessionData=>{
+      newSessionData = JSON.parse(newSessionData);
+      currSess = newSessionData;
+      checkJourneyStatus();
     });
   }
 

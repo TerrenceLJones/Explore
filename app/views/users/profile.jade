@@ -18,7 +18,7 @@ block content
             h3 Join Date:
             h5= moment(profileOwner.joinDate).format('MMMM Do YYYY')
           #user-tag-line
-            h3 Tag
+            h3 Tag:
             h5= profileOwner.tagLine
 
 
@@ -31,7 +31,7 @@ block content
             button.edit-profile.button.button-border.button-rounded Edit Profile
 
         .badges-container
-          h3 My Badges
+          h3 My Badges:
           each badge in profileOwner.badges
             .badges-on-profile(style='background-image: url("#{badge}")')
         //- #current-journeys

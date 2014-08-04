@@ -44,5 +44,5 @@ block content
     .form-group.del-acct
       h3 Delete Account
       form(action='/#{user.username}/delete/#{user._id}', method='POST')
-        input.form-control(type='password', name='password', placeholder='Enter Password')
+        //- input.form-control(type='password', name='password', placeholder='Enter Password')
         button.user-delete-account.btn.btn-danger Delete Account

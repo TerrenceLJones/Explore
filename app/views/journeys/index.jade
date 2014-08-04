@@ -1,7 +1,7 @@
 extends ../shared/template
 
 block content
-  .journeys-index-container
+  .journeys-page-container
     h1= title
     .search-container
       .journeys-filter
@@ -14,12 +14,12 @@ block content
       form(action='/journeys/new')
         button.create-journey-profile.btn.btn-success.btn-lg#create-journeys-page Create a Journey
 
-    .journeys-index-container
+    .journeys-container
       #journeys
         each journey in journeys
           .journeys-on-index
             a(href='/journeys/#{journey._id}')
               img.journeys-search-badge(src='#{journey.badgeImg}')
             a(href='/journeys/#{journey._id}')
-              h1= journey.name
+              h3= journey.name
             h5= journey.location

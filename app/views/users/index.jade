@@ -14,9 +14,10 @@ block content
           button.btn.btn-primary#filter-users Search
     #users
       each user in users
-        .user-profile-index-page
-          a(href='/#{user.username}')
-            img.user-search-profile-picture(src='#{user.photo}')
-          a(href='/#{user.username}')
-            h5= user.name
-          h6= user.tagLine
+        -if(user.isProfileInitialized===true)
+          .user-profile-index-page
+            a(href='/#{user.username}')
+              img.user-search-profile-picture(src=user.photo)
+            a(href='/#{user.username}')
+              h5= user.name
+            //- p= user.tagLine

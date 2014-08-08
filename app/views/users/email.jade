@@ -4,7 +4,7 @@ block content
   h1= title
   .verify-email-container
     .text-container
-      p. Please check your email to complete signup.
+      p Please check your email to complete signup.
       p
        | If page does not redirect in 5 seconds please click
        a(href='/') here
@@ -12,7 +12,7 @@ block content
 
   script.
     var redirectTime = "4000";
-    var redirectURL = "http://localhost:3000/";
+    var redirectURL = "explore.terrenceljones.com";
     function timedRedirect() {
        setTimeout("location.href = redirectURL;",redirectTime);
      }

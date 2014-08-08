@@ -166,7 +166,6 @@ class User {
 }
 
 
-
 function sendVerificationEmail(user, fn){
   'use strict';
 
